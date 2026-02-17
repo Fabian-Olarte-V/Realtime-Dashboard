@@ -25,6 +25,11 @@ export class QueuePage implements OnInit, OnDestroy {
   readonly selectedId$ = this.store.select(QueueSelectors.selectSelectedId);
   readonly pollingError$ = this.store.select(QueueSelectors.selectPollingError);
 
+  readonly canAssignToMe$ = this.store.select(QueueSelectors.selectCanAssignToMe);
+  readonly canComplete$ = this.store.select(QueueSelectors.selectCanComplete);
+  readonly mutationStatus$ = this.store.select(QueueSelectors.selectMutationStatus);
+  readonly mutationError$ = this.store.select(QueueSelectors.selectMutationError);
+
   ngOnInit(): void {
     this.store.dispatch(QueueActions.startPolling());
   }
@@ -42,10 +47,10 @@ export class QueuePage implements OnInit, OnDestroy {
   }
 
   onAssignToMe(): void {
-    console.log('assign to me');
+    this.store.dispatch(QueueActions.assignToMe());
   }
 
   onComplete(): void {
-    console.log('complete');
+    this.store.dispatch(QueueActions.completeSelected());
   }
 }

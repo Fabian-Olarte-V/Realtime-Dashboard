@@ -1,8 +1,7 @@
 <section class="queue-page">
   @if (pollingError$ | async; as error) {
     <div class="error-banner">Error: {{ error }}</div>
-  } 
-  @else {
+  } @else {
     <app-queue-toolbar
       [filters]="(filters$ | async)!"
       (filtersChange)="onFiltersChange($event)"
@@ -20,6 +19,9 @@
       <div class="panel panel--large">
         <app-ticket-detail
           [item]="(selectedItem$ | async)!"
+          [canAssignToMe]="(canAssignToMe$ | async)!"
+          [canComplete]="(canComplete$ | async)!"
+          [error]="mutationError$ | async"
           (assignToMe)="onAssignToMe()"
           (complete)="onComplete()"
         ></app-ticket-detail>

@@ -1,4 +1,6 @@
 export type ItemStatus = 'NEW' | 'IN_PROGRESS' | 'DONE' | 'FAILED';
+export type SortOption = 'updatedAt_desc' | 'deadlineAt_asc' | 'priority_desc';
+export type MutationStatus = 'IDLE' | 'LOADING' | 'ERROR';
 
 export interface QueueItem {
   id: string;
@@ -16,10 +18,22 @@ export interface QueueItem {
   failReason?: 'DEADLINE_EXCEEDED';
 }
 
-export type SortOption = 'updatedAt_desc' | 'deadlineAt_asc' | 'priority_desc';
-
 export interface QueueFilters {
   searchText: string;
   status: ItemStatus | 'ALL';
   sort: SortOption;
+}
+
+export interface TicketMutationResponse {
+  item: QueueItem;
+  serverTime: string;
+}
+
+export interface AssignTicketRequest {
+  assigneeId: string;
+  expectedVersion: number;
+}
+
+export interface CompleteTicketRequest {
+  expectedVersion: number;
 }

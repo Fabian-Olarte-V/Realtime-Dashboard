@@ -12,5 +12,6 @@ export const authReducer = createReducer(
     token,
     status: 'authenticated',
   })),
+  
   on(AuthActions.logout, () => initialAuthState),
 );

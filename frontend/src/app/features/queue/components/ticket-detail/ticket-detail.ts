@@ -10,7 +10,11 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TicketDetailComponent {
-  @Input() item: QueueItem | null = null;
+  @Input({required: true}) item: QueueItem | null = null;
+  @Input({required: true}) canAssignToMe = false;
+  @Input({required: true}) canComplete = false;
+  @Input() isLoading = false;
+  @Input() error: string | null = null;
 
   @Output() assignToMe = new EventEmitter<void>();
   @Output() complete = new EventEmitter<void>();

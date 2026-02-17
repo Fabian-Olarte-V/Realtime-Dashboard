@@ -49,4 +49,30 @@ export const queueReducer = createReducer(
     ...state,
     pollingError: error,
   })),
+
+  on(QueueActions.mutationSuccess, (state, { item, serverTime }) => {
+    const entities = { ...state.items, [item.id]: item };
+    const ids = state.ids.includes(item.id) ? state.ids : [...state.ids, item.id];
+
+    return {
+      ...state,
+      items: entities,
+      ids,
+      lastSyncAt: serverTime,
+      mutationStatus: 'IDLE',
+      mutationError: null,
+    };
+  }),
+
+  on(QueueActions.mutationFailure, (state, { error }) => ({
+    ...state,
+    mutationStatus: 'ERROR',
+    mutationError: error,
+  })),
+
+  on(QueueActions.clearMutationFailure, (state) => ({
+    ...state,
+    mutationStatus: 'IDLE',
+    mutationError: null,
+  })),
 );

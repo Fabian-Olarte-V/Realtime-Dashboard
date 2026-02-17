@@ -10,9 +10,13 @@
     </div>
 
     <div class="actions">
-      <button (click)="assignToMe.emit()">Assign to me</button>
-      <button (click)="complete.emit()">Complete</button>
+      <button [disabled]="!canAssignToMe || isLoading" (click)="assignToMe.emit()">Assign to me</button>
+      <button [disabled]="!canComplete || isLoading" (click)="complete.emit()">Complete</button>
     </div>
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
   </div>
 } @else {
   <p>Select a ticket to see details.</p>

@@ -3,11 +3,11 @@ import { AppUser } from '../models/appUser';
 export interface AuthState {
   user: AppUser | null;
   token: string | null;
-  status: 'authenticated' | 'unauthenticated';
+  authStatus: boolean;
 }
 
 export const initialAuthState: AuthState = {
   user: null,
   token: null,
-  status: 'unauthenticated',
+  authStatus: true, // Assuming the user is authenticated by default
 };

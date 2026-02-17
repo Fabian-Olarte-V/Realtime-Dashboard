@@ -1,4 +1,4 @@
-import { QueueFilters, QueueItem } from '../models/queue';
+import { MutationStatus, QueueFilters, QueueItem } from '../models/queue';
 
 export interface QueueState {
   items: Record<string, QueueItem>;
@@ -15,6 +15,10 @@ export interface QueueState {
 
   //polling error handling
   pollingError: string | null;
+
+  //mutation error handling
+  mutationStatus: MutationStatus;
+  mutationError: string | null;
 }
 
 export const initialQueueState: QueueState = {
@@ -26,4 +30,6 @@ export const initialQueueState: QueueState = {
   pollingIntervalMs: 5000,
   lastSyncAt: null,
   pollingError: null,
+  mutationStatus: 'IDLE',
+  mutationError: null,
 };
