@@ -1,0 +1,29 @@
+<section class="auth-page">
+  <div class="auth-page__shell">
+    <aside class="auth-page__visual" aria-hidden="true">
+      <img
+        src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1200&q=80"
+        alt=""
+      />
+      <div class="auth-page__overlay"></div>
+      <div class="auth-page__copy">
+        <h1>Realtime Dashboard</h1>
+        <p>Track metrics, monitor queues, and move faster with a focused control center.</p>
+      </div>
+    </aside>
+
+    <section class="auth-page__form-panel">
+      @if (isLoginMode) {
+        <app-login-form
+          (submitLogin)="onLoginSubmit($event)"
+          (signUpClicked)="showRegister()"
+        ></app-login-form>
+      } @else {
+        <app-register-form
+          (submitRegister)="onRegisterSubmit($event)"
+          (loginClicked)="showLogin()"
+        ></app-register-form>
+      }
+    </section>
+  </div>
+</section>

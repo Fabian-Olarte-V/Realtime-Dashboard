@@ -9,5 +9,5 @@ export interface AuthState {
 export const initialAuthState: AuthState = {
   user: null,
   token: null,
-  authStatus: true, // Assuming the user is authenticated by default
+  authStatus: false
 };

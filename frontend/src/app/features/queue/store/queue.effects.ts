@@ -27,7 +27,7 @@ export class QueueEffects {
     this.actions$.pipe(
       ofType(QueueActions.startPolling),
       switchMap(() =>
-        timer(0, 5000).pipe(
+        timer(0, 30000).pipe(
           takeUntil(this.actions$.pipe(ofType(QueueActions.stopPolling))),
           withLatestFrom(this.store.select(QueueSelectors.selectLastSyncAt)),
           exhaustMap(([, lastSyncAt]) => {

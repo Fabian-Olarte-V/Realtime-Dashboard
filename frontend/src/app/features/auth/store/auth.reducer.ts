@@ -6,12 +6,13 @@ export const authFeatureKey = 'auth';
 
 export const authReducer = createReducer(
   initialAuthState,
-  on(AuthActions.loginMock, (state, { user, token }) => ({
+  
+  on(AuthActions.updateUserSession, (state, { user, token }) => ({
     ...state,
     user,
     token,
-    status: 'authenticated',
+    authStatus: true,
   })),
-  
+
   on(AuthActions.logout, () => initialAuthState),
 );

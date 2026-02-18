@@ -4,7 +4,7 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./features/auth/pages/login-page/login-page').then((m) => m.LoginPage),
+      import('./features/auth/pages/auth-page/auth-page').then((m) => m.AuthPage),
   },
   {
     path: 'queue',

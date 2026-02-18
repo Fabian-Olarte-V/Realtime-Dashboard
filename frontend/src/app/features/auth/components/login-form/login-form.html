@@ -1,0 +1,64 @@
+<form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+  <h2 class="login-form__title">Welcome back</h2>
+
+  <div class="login-form__field">
+    <label for="email">Email</label>
+    <input
+      id="email"
+      type="email"
+      formControlName="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+    />
+    @if (emailControl.touched || submitted) {
+      @if (emailControl.hasError('required')) {
+        <small class="error">Email is required.</small>
+      }
+      @if (emailControl.hasError('email')) {
+        <small class="error">Enter a valid email address.</small>
+      }
+    }
+  </div>
+
+  <div class="login-form__field">
+    <label for="password">Password</label>
+    <div class="login-form__password-row">
+      <input
+        id="password"
+        class="login-form__password-input"
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+      />
+      <button
+        class="login-form__toggle"
+        type="button"
+        [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+        (click)="toggleShowPassword()"
+      >
+        @if (showPassword) {
+          <app-eye-off-icon></app-eye-off-icon>
+        } @else {
+          <app-eye-icon></app-eye-icon>
+        }
+      </button>
+    </div>
+
+    @if (passwordControl.touched || submitted) {
+      @if (passwordControl.hasError('required')) {
+        <small class="error">Password is required.</small>
+      }
+      @if (passwordControl.hasError('minlength')) {
+        <small class="error">Password must be at least 8 characters long.</small>
+      }
+    }
+  </div>
+
+  <button class="login-form__submit" type="submit">Login</button>
+
+  <p class="login-form__signup">
+    Don&apos;t have an account?
+    <button class="login-form__link-btn" type="button" (click)="onSignUp()">Sign up</button>
+  </p>
+</form>

@@ -5,3 +5,8 @@ export interface AppUser {
   name: string;
   role: UserRole;
 }
+
+export interface AuthRequestPayload {
+  email: string;
+  password: string;
+}

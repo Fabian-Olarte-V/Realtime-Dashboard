@@ -1,0 +1,83 @@
+<form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+  <h2 class="register-form__title">Create account</h2>
+
+  <div class="register-form__field">
+    <label for="name">Name</label>
+    <input
+      id="name"
+      type="text"
+      formControlName="name"
+      placeholder="Enter your name"
+      autocomplete="name"
+    />
+    @if (nameControl.touched || submitted) {
+      @if (nameControl.hasError('required')) {
+        <small class="error">Name is required.</small>
+      }
+      @if (nameControl.hasError('minlength')) {
+        <small class="error">Name must be at least 2 characters long.</small>
+      }
+    }
+  </div>
+
+  <div class="register-form__field">
+    <label for="email">Email</label>
+    <input
+      id="email"
+      type="email"
+      formControlName="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+    />
+    @if (emailControl.touched || submitted) {
+      @if (emailControl.hasError('required')) {
+        <small class="error">Email is required.</small>
+      }
+      @if (emailControl.hasError('email')) {
+        <small class="error">Enter a valid email address.</small>
+      }
+    }
+  </div>
+
+  <div class="register-form__field">
+    <label for="password">Password</label>
+    <div class="register-form__password-row">
+      <input
+        id="password"
+        class="register-form__password-input"
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Create a password"
+        autocomplete="new-password"
+      />
+      <button
+        class="register-form__toggle"
+        type="button"
+        [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+        (click)="toggleShowPassword()"
+      >
+        @if (showPassword) {
+          <app-eye-off-icon></app-eye-off-icon>
+        } @else {
+          <app-eye-icon></app-eye-icon>
+        }
+      </button>
+    </div>
+
+    @if (passwordControl.touched || submitted) {
+      @if (passwordControl.hasError('required')) {
+        <small class="error">Password is required.</small>
+      }
+      @if (passwordControl.hasError('minlength')) {
+        <small class="error">Password must be at least 8 characters long.</small>
+      }
+    }
+  </div>
+
+  <button class="register-form__submit" type="submit">Sign up</button>
+
+  <p class="register-form__login">
+    Already have an account?
+    <button class="register-form__link-btn" type="button" (click)="onLogin()">Login</button>
+  </p>
+</form>
