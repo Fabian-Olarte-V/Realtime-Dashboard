@@ -1,5 +1,5 @@
-<cdk-virtual-scroll-viewport itemSize="57" class="ticket-list-viewport">
-  <div
+<cdk-virtual-scroll-viewport itemSize="90" class="ticket-list-viewport">
+  <article
     *cdkVirtualFor="let item of items; trackBy: trackById"
     (click)="selectItem.emit(item.id)"
     (keydown.enter)="selectItem.emit(item.id)"
@@ -7,11 +7,21 @@
     role="button"
     tabindex="0"
     class="ticket-item"
+    [class.ticket-item--selected]="item.id === selectedId"
   >
-    <div class="ticket-item-row">
-      <strong>{{ item.title }}</strong>
-      <span>{{ item.status }}</span>
+    <div class="ticket-item__header">
+      <strong class="ticket-item__title">{{ item.title }}</strong>
+      <span
+        class="status-pill"
+        [class.status-pill--in-progress]="item.status === 'IN_PROGRESS'"
+        [class.status-pill--done]="item.status === 'DONE'"
+        [class.status-pill--failed]="item.status === 'FAILED'"
+      >
+        {{ item.status }}
+      </span>
     </div>
-    <small>Priority: {{ item.priority }} · Updated: {{ item.updatedAt }}</small>
-  </div>
+
+    <p class="ticket-item__meta">Assignee: {{ item.assigneeId || 'Unassigned' }}</p>
+    <p class="ticket-item__meta">Priority: {{ item.priority }} - Updated: {{ item.updatedAt }}</p>
+  </article>
 </cdk-virtual-scroll-viewport>

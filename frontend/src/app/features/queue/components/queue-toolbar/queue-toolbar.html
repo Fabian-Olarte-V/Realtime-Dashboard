@@ -1,17 +1,31 @@
 <div class="queue-toolbar">
-  <input type="text" [value]="filters.searchText" (input)="onQueryInput($event)" placeholder="Search..." />
+  <label class="field field--search">
+    <span class="field__label">Search Ticket</span>
+    <input
+      type="text"
+      [value]="filters.searchText"
+      (input)="onQueryInput($event)"
+      placeholder="ID, titulo o descripcion"
+    />
+  </label>
 
-  <select [value]="filters.status" (change)="onStatusChange($event)">
-    <option value="ALL">All</option>
-    <option value="NEW">NEW</option>
-    <option value="IN_PROGRESS">IN_PROGRESS</option>
-    <option value="DONE">DONE</option>
-    <option value="FAILED">FAILED</option>
-  </select>
+  <label class="field">
+    <span class="field__label">Status</span>
+    <select [value]="filters.status" (change)="onStatusChange($event)">
+      <option value="ALL">All</option>
+      <option value="NEW">NEW</option>
+      <option value="IN_PROGRESS">IN_PROGRESS</option>
+      <option value="DONE">DONE</option>
+      <option value="FAILED">FAILED</option>
+    </select>
+  </label>
 
-  <select [value]="filters.sort" (change)="onSortChange($event)">
-    <option value="updatedAt_desc">Updated (desc)</option>
-    <option value="deadlineAt_asc">Deadline (asc)</option>
-    <option value="priority_desc">Priority (desc)</option>
-  </select>
+  <label class="field">
+    <span class="field__label">Order By</span>
+    <select [value]="filters.sort" (change)="onSortChange($event)">
+      <option value="updatedAt_desc">Updated (desc)</option>
+      <option value="deadlineAt_asc">Deadline (asc)</option>
+      <option value="priority_desc">Priority (desc)</option>
+    </select>
+  </label>
 </div>

@@ -1,1 +1,12 @@
-<router-outlet />
+<main class="app-shell">
+  @if (showHeader) {
+    <header class="app-header">
+      <p class="app-brand">Realtime Dashboard</p>
+      <button type="button" class="logout-button" (click)="logout()">Logout</button>
+    </header>
+  }
+
+  <section class="app-content" [class.app-content--auth]="!showHeader">
+    <router-outlet />
+  </section>
+</main>

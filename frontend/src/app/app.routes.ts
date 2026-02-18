@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: 'login',
+    data: { hideHeader: true },
     loadComponent: () =>
       import('./features/auth/pages/auth-page/auth-page').then((m) => m.AuthPage),
   },

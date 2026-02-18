@@ -8,15 +8,15 @@
     ></app-queue-toolbar>
 
     <div class="layout">
-      <div class="panel panel--small">
+      <section class="panel panel--list">
         <app-ticket-list
           [items]="(items$ | async)!"
           [selectedId]="(selectedId$ | async)!"
           (selectItem)="onSelectItem($event)"
         ></app-ticket-list>
-      </div>
+      </section>
 
-      <div class="panel panel--large">
+      <section class="panel panel--detail">
         <app-ticket-detail
           [item]="(selectedItem$ | async)!"
           [canAssignToMe]="(canAssignToMe$ | async)!"
@@ -25,7 +25,7 @@
           (assignToMe)="onAssignToMe()"
           (complete)="onComplete()"
         ></app-ticket-detail>
-      </div>
+      </section>
     </div>
   }
 </section>

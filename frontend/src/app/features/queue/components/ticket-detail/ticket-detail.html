@@ -1,23 +1,52 @@
 @if (item) {
-  <div class="ticket-detail">
-    <h2 class="title">{{ item.title }}</h2>
-    <p class="description">{{ item.description || 'No description' }}</p>
+  <article class="ticket-detail">
+    <img
+      class="ticket-detail__cover"
+      src="/assets/images/ticket-bg.jpg"
+      alt="Ticket placeholder"
+    />
+    <div class="ticket-detail__content">
+      <header class="ticket-detail__header">
+        <h2 class="ticket-detail__title">{{ item.title }}</h2>
+        <span class="ticket-detail__id">#{{ item.id }}</span>
+      </header>
 
-    <div class="meta">
-      <span><strong>Status:</strong> {{ item.status }}</span>
-      <span><strong>Priority:</strong> {{ item.priority }}</span>
-      <span><strong>Deadline:</strong> {{ item.deadlineAt }}</span>
+      <p class="ticket-detail__description">{{ item.description || 'No description' }}</p>
+
+      <div class="ticket-detail__meta">
+        <span><strong>Status:</strong> {{ item.status }}</span>
+        <span><strong>Priority:</strong> {{ item.priority }}</span>
+        <span><strong>Deadline:</strong> {{ item.deadlineAt }}</span>
+      </div>
+
+      <div class="ticket-detail__actions">
+        <button
+          class="btn btn--neutral"
+          [disabled]="!canAssignToMe || isLoading"
+          (click)="assignToMe.emit()"
+        >
+          Assign to me
+        </button>
+        <button
+          class="btn btn--primary"
+          [disabled]="!canComplete || isLoading"
+          (click)="complete.emit()"
+        >
+          Complete
+        </button>
+      </div>
+
+      @if (error) {
+        <p class="ticket-detail__error">{{ error }}</p>
+      }
     </div>
-
-    <div class="actions">
-      <button [disabled]="!canAssignToMe || isLoading" (click)="assignToMe.emit()">Assign to me</button>
-      <button [disabled]="!canComplete || isLoading" (click)="complete.emit()">Complete</button>
-    </div>
-
-    @if (error) {
-      <p class="error">{{ error }}</p>
-    }
-  </div>
+  </article>
 } @else {
-  <p>Select a ticket to see details.</p>
+  <section class="ticket-detail ticket-detail--empty">
+    <div class="ticket-detail__empty-icon">
+      <app-ticket-empty-icon [size]="72"></app-ticket-empty-icon>
+    </div>
+    <h3>Sin ticket seleccionado</h3>
+    <p>Selecciona un ticket desde la lista para ver su detalle y realizar acciones.</p>
+  </section>
 }

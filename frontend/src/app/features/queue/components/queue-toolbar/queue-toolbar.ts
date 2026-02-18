@@ -5,6 +5,7 @@ import { QueueFilters } from '../../models/queue';
   selector: 'app-queue-toolbar',
   standalone: true,
   templateUrl: './queue-toolbar.html',
+  styleUrl: './queue-toolbar.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QueueToolbarComponent {
