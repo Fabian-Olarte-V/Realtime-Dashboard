@@ -1,0 +1,15 @@
+# Visual Studio (en Api)
+Api/.vs/
+
+# Outputs .NET (en todo el backend)
+**/bin/
+**/obj/
+
+# Archivos de usuario/IDE
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
