@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Infraestructure.Persistance;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers
 {
@@ -10,6 +12,15 @@ namespace Api.Controllers
         public IActionResult Index()
         {
             return Ok();
+        }
+
+        [HttpGet("test")]
+        public async Task<IActionResult> Test([FromServices] AppDbContext db)
+        {
+            var users = await db.Users.CountAsync();
+            var tickets = await db.Tickets.CountAsync();
+
+            return Ok(new { users, tickets, serverTime = DateTimeOffset.UtcNow });
         }
     }
 }

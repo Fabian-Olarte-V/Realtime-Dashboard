@@ -1,9 +1,10 @@
 using Infraestructure;
+using Infraestructure.Persistance;
+using Infraestructure.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddInfraestructure();
-builder.Services.AddOpenApi();
+builder.Services.AddInfraestructure(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
@@ -22,6 +23,12 @@ builder.Services.AddCors(opt =>
 
 
 var app = builder.Build();
+
+using(var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await DbSeeder.SeedAsync(db);
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
