@@ -18,8 +18,9 @@ namespace Infraestructure.Seed
                 {
                     Id = Guid.NewGuid(),
                     Name = "Admin User",
+                    Username = "admin",
                     Email = "admin@test.com",
-                    PasswordHash = "admin",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
                     Role = UserRole.ADMIN
                 };
 
@@ -27,8 +28,9 @@ namespace Infraestructure.Seed
                 {
                     Id = Guid.NewGuid(),
                     Name = "Agent User",
+                    Username = "agent",
                     Email = "agent@test.com",
-                    PasswordHash = "agent",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("agent123"),
                     Role = UserRole.AGENT
                 };
 
