@@ -1,3 +1,4 @@
+using Api.BackgroundJobs;
 using Infraestructure;
 using Infraestructure.Persistance;
 using Infraestructure.Seed;
@@ -5,6 +6,8 @@ using Infraestructure.Seed;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfraestructure(builder.Configuration);
+builder.Services.AddHostedService<DeadlineFailWorker>();
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
