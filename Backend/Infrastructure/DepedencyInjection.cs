@@ -21,16 +21,17 @@ namespace Infraestructure
                 opt.UseSqlServer(configuration.GetConnectionString("Default"));
             });
 
-            services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
             services.AddSingleton<IClock, SystemClock>();
+            services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddSingleton(sp => sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<JwtOptions>>().Value);
 
-            var jwt = configuration.GetSection("Jwt").Get<JwtOptions>()!;
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {
+                    var jwt = configuration.GetSection("Jwt").Get<JwtOptions>()!;
+
                     opt.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
