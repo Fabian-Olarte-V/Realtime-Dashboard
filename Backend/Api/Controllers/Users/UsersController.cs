@@ -1,33 +1,26 @@
-﻿using Infraestructure.Persistance;
+﻿using Application.Features.User.DTOs;
+using Application.Features.User.Queries.GetAllUsersQuery;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Application.DTOs.User;
-using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers.User
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "AdminOnly")]
     public class UsersController : ControllerBase
     {
-        private readonly AppDbContext _db;
+        private readonly IMediator _mediator;
 
-        public UsersController(AppDbContext db)
+        public UsersController(IMediator mediator)
         {
-            _db = db;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<UserDto>>> GetUsers(CancellationToken ct)
+        public async Task<ActionResult<IReadOnlyList<UserDto>>> GetUsers()
         {
-            var users = await _db.Users
-                .AsNoTracking()
-                .OrderBy(u => u.Username)
-                .Select(u => new UserDto(u.Id, u.Username, u.Role.ToString()))
-                .ToListAsync(ct);
-
-            return Ok(users);
+            var result = await _mediator.Send(new GetAllUsersQuery());
+            return Ok(result);
         }
     }
 }

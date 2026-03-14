@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.AggregateModels.Tickets;
+using Domain.AggregateModels.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure.Persistance
