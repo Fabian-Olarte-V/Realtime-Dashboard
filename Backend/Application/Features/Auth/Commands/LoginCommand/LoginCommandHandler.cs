@@ -3,22 +3,22 @@ using Application.Features.Auth.DTOs;
 using Domain.AggregateModels.Users;
 using MediatR;
 
-namespace Application.Features.Auth.Queries.LoginQuery
+namespace Application.Features.Auth.Commands.LoginCommand
 {
-    public class LoginQueryHandler : IRequestHandler<LoginQuery, LoginResponseDto>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponseDto>
     {
         private readonly IUserFinder _userFinder;
         private readonly IJwtTokenGenerator _jwt;
         private readonly IClock _clock;
 
-        public LoginQueryHandler(IUserFinder userFinder, IJwtTokenGenerator jwt, IClock clock)
+        public LoginCommandHandler(IUserFinder userFinder, IJwtTokenGenerator jwt, IClock clock)
         {
             _userFinder = userFinder;
             _jwt = jwt;
             _clock = clock;
         }
 
-        public async Task<LoginResponseDto> Handle(LoginQuery request, CancellationToken cancellationToken)
+        public async Task<LoginResponseDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userFinder.FindByUsernameAsync(request.Username);
             if (user is null) throw new ArgumentNullException(nameof(user));

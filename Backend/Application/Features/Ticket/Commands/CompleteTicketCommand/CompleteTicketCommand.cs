@@ -1,4 +1,5 @@
-﻿using Application.Features.Ticket.DTOs;
+using Application.Features.Ticket.DTOs;
+using FluentValidation;
 using MediatR;
 
 namespace Application.Features.Ticket.Commands.CompleteTicketCommand
@@ -9,7 +10,20 @@ namespace Application.Features.Ticket.Commands.CompleteTicketCommand
         public Guid UserId { get; init; }
         public bool IsAdminUser { get; init; }
         public int ExpectedVersion { get; init; }
+    }
 
-        public CompleteTicketCommand() { }
+    public class CompleteTicketCommandValidator : AbstractValidator<CompleteTicketCommand>
+    {
+        public CompleteTicketCommandValidator()
+        {
+            RuleFor(x => x.TicketId)
+                .NotEmpty();
+
+            RuleFor(x => x.UserId)
+                .NotEmpty();
+
+            RuleFor(x => x.ExpectedVersion)
+                .GreaterThanOrEqualTo(0);
+        }
     }
 }

@@ -10,6 +10,10 @@
 	<PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
 	<PackageReference Include="MediatR" Version="14.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.3" />
+	<PackageReference Include="FluentValidation" Version="12.1.1" />
+	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+	<PackageReference Include="Autofac" Version="9.1.0" />
+	<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

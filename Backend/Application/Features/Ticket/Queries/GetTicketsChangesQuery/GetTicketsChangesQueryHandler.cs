@@ -18,7 +18,7 @@ namespace Application.Features.Ticket.Queries.GetTicketsChangesQuery
 
         public async Task<IEnumerable<TicketDto>> Handle(GetTicketsChangesQuery request, CancellationToken cancellationToken)
         {
-            if (!DateTimeOffset.TryParse(request.sinceIso, out var sinceDate))
+            if (!DateTimeOffset.TryParse(request.SinceIso, out var sinceDate))
                 throw new ArgumentException();
 
             var items = await _ticketFinder.GetAllTicketsAsync();

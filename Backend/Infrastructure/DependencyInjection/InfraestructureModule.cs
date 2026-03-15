@@ -12,7 +12,6 @@ namespace Infrastructure.DependencyInjection
 {
     public class InfraestructureModule : Module
     {
-
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<UserFinder>()

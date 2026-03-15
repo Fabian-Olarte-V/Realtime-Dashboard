@@ -1,12 +1,12 @@
-﻿using Application.Features.Auth.DTOs;
-using Application.Features.Auth.Queries.LoginQuery;
+﻿using Application.Features.Auth.Commands.LoginCommand;
+using Application.Features.Auth.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -18,7 +18,7 @@ namespace Api.Controllers
 
 
         [HttpPost("login")]
-        public async Task<ActionResult<LoginResponseDto>> Login(LoginQuery req)
+        public async Task<ActionResult<LoginResponseDto>> Login(LoginCommand req)
         {
             var result = await _mediator.Send(req);
             return Ok(result);

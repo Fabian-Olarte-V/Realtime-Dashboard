@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Ticket.DTOs
+namespace Application.Features.Ticket.DTOs
 {
     public sealed record TicketDto(
         Guid Id,
@@ -12,7 +12,5 @@
         DateTimeOffset? DeadlineAt
     );
 
-    public sealed record AssingTicketRequestDto(int ExpectedVersion);
-    public sealed record CompleteTicketRequestDto(TicketDto Item, DateTimeOffset ServerTime);
     public sealed record TicketMutationResponseDto(TicketDto Items, DateTimeOffset ServerTime);
 }

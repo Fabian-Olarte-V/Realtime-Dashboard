@@ -14,7 +14,5 @@ namespace Application.Features.Ticket.Queries.GetFilteredTicketsQuery
         public string? Sort { get; init; }
 
         public string? Dir { get; init; }
-
-        public GetFilteredTicketsQuery() { }
     }
 }

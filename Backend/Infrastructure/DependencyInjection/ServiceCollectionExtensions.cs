@@ -15,14 +15,14 @@ namespace Infrastructure.DependencyInjection
     {
         public static IServiceCollection AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtOptions>>().Value);
+
             services.AddDbContext<AppDbContext>(opt =>
             {
                 opt.UseSqlServer(configuration.GetConnectionString("Default"));
             });
             
-            services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
-            services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtOptions>>().Value);
-
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
@@ -44,11 +44,6 @@ namespace Infrastructure.DependencyInjection
                         ClockSkew = TimeSpan.FromSeconds(30)
                     };
                 });
-
-            services.AddMediatR(config =>
-            {
-                config.RegisterServicesFromAssembly(typeof(MediatRAssemblyReference).Assembly);
-            });
 
             services.AddAuthorization(options =>
             {
