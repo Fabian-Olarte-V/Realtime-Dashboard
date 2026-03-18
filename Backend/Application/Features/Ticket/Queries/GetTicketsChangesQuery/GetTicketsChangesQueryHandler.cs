@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using Application.Exceptions;
 using Application.Features.Ticket.DTOs;
 using Domain.AggregateModels.Tickets;
 using MediatR;
@@ -19,7 +20,7 @@ namespace Application.Features.Ticket.Queries.GetTicketsChangesQuery
         public async Task<IEnumerable<TicketDto>> Handle(GetTicketsChangesQuery request, CancellationToken cancellationToken)
         {
             if (!DateTimeOffset.TryParse(request.SinceIso, out var sinceDate))
-                throw new ArgumentException();
+                throw new InvalidRequestException("The provided 'since' value is not a valid ISO date.");
 
             var items = await _ticketFinder.GetAllTicketsAsync();
             var result = items

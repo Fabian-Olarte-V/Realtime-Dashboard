@@ -1,5 +1,4 @@
-﻿using Application.Common;
-using Infraestructure.Persistance;
+﻿using Infraestructure.Persistance;
 using Infrastructure.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Options;
+using Api.Common.Auth;
+using Domain.Common.Enums.User;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -41,14 +42,14 @@ namespace Infrastructure.DependencyInjection
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
 
                         ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromSeconds(30)
+                        ClockSkew = TimeSpan.FromMinutes(2)
                     };
                 });
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOnly", p => p.RequireRole("ADMIN"));
-                options.AddPolicy("AgentOrAdmin", p => p.RequireRole("ADMIN", "AGENT"));
+                options.AddPolicy(AuthPolicies.AdminOnly, p => p.RequireRole(UserRole.ADMIN.ToString()));
+                options.AddPolicy(AuthPolicies.AgentOrAdmin, p => p.RequireRole(UserRole.ADMIN.ToString(), UserRole.AGENT.ToString()));
             });
 
             return services;

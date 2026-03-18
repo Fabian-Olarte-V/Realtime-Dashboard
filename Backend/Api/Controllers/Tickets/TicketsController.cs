@@ -5,12 +5,14 @@ using Application.Features.Ticket.DTOs;
 using Application.Features.Ticket.Queries.GetFilteredTicketsQuery;
 using Application.Features.Ticket.Queries.GetTicketsChangesQuery;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Tickets
 {
     [ApiController]
     [Route("api/tickets")]
+    [Authorize(AuthPolicies.AgentOrAdmin)]
     public class TicketsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -51,7 +53,7 @@ namespace Api.Controllers.Tickets
             return Ok(result);
         }
 
-        [HttpPut("{id:guid}/complete")]
+        [HttpPut("{id:guid}/complete")]   
         public async Task<ActionResult> CompleteTicket(Guid id, [FromBody] CompleteTicketCommand req)
         {
             var userId = User.GetUserId();

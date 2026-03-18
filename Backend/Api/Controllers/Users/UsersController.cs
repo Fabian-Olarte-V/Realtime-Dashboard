@@ -1,6 +1,8 @@
-﻿using Application.Features.User.DTOs;
+﻿using Api.Common.Auth;
+using Application.Features.User.DTOs;
 using Application.Features.User.Queries.GetAllUsersQuery;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.User
@@ -17,6 +19,7 @@ namespace Api.Controllers.User
         }
 
         [HttpGet]
+        [Authorize(AuthPolicies.AdminOnly)]
         public async Task<ActionResult<IReadOnlyList<UserDto>>> GetUsers()
         {
             var result = await _mediator.Send(new GetAllUsersQuery());

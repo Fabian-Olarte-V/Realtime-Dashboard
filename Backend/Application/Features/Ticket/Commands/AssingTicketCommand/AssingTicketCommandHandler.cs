@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using Application.Exceptions;
 using Application.Features.Ticket.DTOs;
 using Domain.AggregateModels.Tickets;
 using MediatR;
@@ -23,14 +24,14 @@ namespace Application.Features.Ticket.Commands.AssingTicketCommand
         public async Task<TicketMutationResponseDto> Handle(AssingTicketCommand request, CancellationToken cancellationToken)
         {
             var ticket = await _ticketFinder.GetTicketByIdAsync(request.TicketId);
-            if (ticket is null) throw new ArgumentNullException(nameof(ticket));
+            if (ticket is null) throw new EntityNotFoundException("Ticket", request.TicketId);
 
             //optimistic concurrency 
             if (ticket.Version != request.ExpectedVersion)
-                throw new Exception("The ticket has been modified by another user. Please refresh and try again.");
+                throw new ConcurrencyConflictException("The ticket has been modified by another user. Please refresh and try again.");
 
             if (ticket.Status == TicketStatus.DONE || ticket.Status == TicketStatus.FAILED)
-                throw new Exception("Cannot assign a ticket that is already completed or failed.");
+                throw new InvalidOperationApplicationException("Cannot assign a ticket that is already completed or failed.");
 
 
             ticket.AssigneeId = request.UserId;
@@ -52,7 +53,7 @@ namespace Application.Features.Ticket.Commands.AssingTicketCommand
                 ticketUpdated.DeadlineAt
             );
 
-            return new TicketMutationResponseDto(ticketResponse, _clock.UtcNow);
+            return new TicketMutationResponseDto(ticketResponse);
         }
     }
 }

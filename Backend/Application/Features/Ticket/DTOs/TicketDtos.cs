@@ -12,5 +12,5 @@ namespace Application.Features.Ticket.DTOs
         DateTimeOffset? DeadlineAt
     );
 
-    public sealed record TicketMutationResponseDto(TicketDto Items, DateTimeOffset ServerTime);
+    public sealed record TicketMutationResponseDto(TicketDto Items);
 }

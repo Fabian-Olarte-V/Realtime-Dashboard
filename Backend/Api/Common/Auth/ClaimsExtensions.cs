@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Api.Common.Auth
 {
@@ -6,13 +7,13 @@ namespace Api.Common.Auth
     {
         public static Guid GetUserId(this ClaimsPrincipal user)
         {
-            var sub = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            var sub = user.FindFirstValue(JwtRegisteredClaimNames.Sub);
             return Guid.Parse(sub!);
         }
 
         public static bool IsAdmin(this ClaimsPrincipal user)
         {
-            return user.IsInRole("Admin");
+            return user.IsInRole("ADMIN");
         }
     }
 }

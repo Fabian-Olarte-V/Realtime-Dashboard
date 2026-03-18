@@ -15,7 +15,8 @@ namespace Application.Features.Auth.Commands.LoginCommand
         public LoginCommandValidator()
         {
             RuleFor(x => x.Username)
-                .NotEmpty().MinimumLength(2).WithMessage("AAAAAAAAAAA");
+                .NotEmpty()
+                .MinimumLength(3);
 
             RuleFor(x => x.Password)
                 .NotEmpty()

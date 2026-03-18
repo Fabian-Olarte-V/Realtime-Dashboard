@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using Application.Exceptions;
 using Application.Features.Ticket.DTOs;
 using Domain.AggregateModels.Tickets;
 using MediatR;
@@ -22,18 +23,18 @@ namespace Application.Features.Ticket.Commands.CompleteTicketCommand
         {
             var ticket = await _ticketFinder.GetTicketByIdAsync(request.TicketId);
             if (ticket is null) 
-                throw new ArgumentNullException(nameof(ticket));
+                throw new EntityNotFoundException("Ticket", request.TicketId);
 
 
             if (!request.IsAdminUser || ticket.AssigneeId != request.UserId) 
-                throw new ArgumentNullException("Unauthorized");
+                throw new UnauthorizedActionException();
 
 
             if (ticket.Version != request.ExpectedVersion)
-                throw new ArgumentNullException("The ticket has been modified by another user. Please refresh and try again.");
+                throw new ConcurrencyConflictException("The ticket has been modified by another user. Please refresh and try again.");
 
             if (ticket.Status != TicketStatus.IN_PROGRESS)
-                throw new ArgumentNullException("Cannot complete a ticket that is already completed or failed.");
+                throw new InvalidOperationApplicationException("Cannot complete a ticket that is already completed or failed.");
 
 
             ticket.Status = TicketStatus.DONE;
@@ -54,7 +55,7 @@ namespace Application.Features.Ticket.Commands.CompleteTicketCommand
                 ticketUpdated.DeadlineAt
             );
 
-            return new TicketMutationResponseDto(ticketResponse, _clock.UtcNow);
+            return new TicketMutationResponseDto(ticketResponse);
         }
     }
 }

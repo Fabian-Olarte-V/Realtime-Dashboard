@@ -19,22 +19,21 @@ namespace Infrastructure.Auth
         {
             var claims = new[]
             {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, username),
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Role, role),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(ClaimTypes.Role, role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var IssuerSigningKey = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: _options.Issuer,
                 audience: _options.Audience,
-                claims: claims,
+                signingCredentials: IssuerSigningKey,
                 expires: DateTime.UtcNow.AddMinutes(_options.ExpiresMinutes),
-                signingCredentials: creds
+                claims: claims
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);

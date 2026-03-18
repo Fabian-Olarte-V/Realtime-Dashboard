@@ -1,10 +1,12 @@
+using Api.Filters;
+using Api.Middlewares;
+using Application.DependencyInjection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Infraestructure.BackgroundJobs;
 using Infraestructure.Persistance;
 using Infrastructure.DependencyInjection;
 using Infrastructure.Persistance.Seed;
-using Application.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +16,19 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterMod
 
 builder.Services.AddApplication();
 builder.Services.AddInfraestructure(builder.Configuration);
+builder.Services.AddScoped<SuccessResponseResultFilter>();
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
 builder.Services.AddHostedService<DeadlineFailWorker>();
 builder.Services.AddMemoryCache();
-builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddControllers(opt =>
+{
+    opt.Filters.Add<SuccessResponseResultFilter>();
+});
+
 
 builder.Services.AddCors(opt =>
     {
@@ -41,7 +51,6 @@ using(var scope = app.Services.CreateScope())
     await DbSeeder.SeedAsync(db);
 }
 
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -51,6 +60,8 @@ app.UseCors("Frontend");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 app.Run();
