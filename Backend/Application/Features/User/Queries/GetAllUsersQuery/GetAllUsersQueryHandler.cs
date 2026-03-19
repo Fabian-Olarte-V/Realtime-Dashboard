@@ -1,8 +1,8 @@
-﻿using Application.Features.User.DTOs;
+﻿using Application.Features.Users.DTOs;
 using Domain.AggregateModels.Users;
 using MediatR;
 
-namespace Application.Features.User.Queries.GetAllUsersQuery
+namespace Application.Features.Users.Queries.GetAllUsersQuery
 {
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<UserDto>>
     {

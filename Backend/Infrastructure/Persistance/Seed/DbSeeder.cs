@@ -1,6 +1,6 @@
 ﻿using Domain.AggregateModels.Users;
 using Domain.AggregateModels.Tickets;
-using Domain.Common.Enums.User;
+using Domain.Common.Enums.Users;
 using Infraestructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,25 +14,8 @@ namespace Infrastructure.Persistance.Seed
 
             if(!await context.Users.AnyAsync())
             {
-                var admin = new User
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Admin User",
-                    Username = "admin",
-                    Email = "admin@test.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
-                    Role = UserRole.ADMIN
-                };
-
-                var agent = new User
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Agent User",
-                    Username = "agent",
-                    Email = "agent@test.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("agent123"),
-                    Role = UserRole.AGENT
-                };
+                var admin = new User("admin", BCrypt.Net.BCrypt.HashPassword("admin123"), UserRole.ADMIN);
+                var agent = new User("agent", BCrypt.Net.BCrypt.HashPassword("agent123"), UserRole.AGENT);
 
                 context.Users.AddRange(admin, agent);
                 await context.SaveChangesAsync();

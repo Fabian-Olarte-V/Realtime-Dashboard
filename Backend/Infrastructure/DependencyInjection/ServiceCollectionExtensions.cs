@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Api.Common.Auth;
-using Domain.Common.Enums.User;
+using Domain.Common.Enums.Users;
 
 namespace Infrastructure.DependencyInjection
 {

@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Commands.LoginCommand;
+using Application.Features.Auth.Commands.LoginCommand;
+using Application.Features.Auth.Commands.SingUpCommand;
 using Application.Features.Auth.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +19,15 @@ namespace Api.Controllers
             _mediator = mediator;
         }
 
-
         [HttpPost("login")]
-        public async Task<ActionResult<LoginResponseDto>> Login(LoginCommand req)
+        public async Task<ActionResult<AuthResponseDto>> Login(LoginCommand req)
+        {
+            var result = await _mediator.Send(req);
+            return Ok(result);
+        }
+
+        [HttpPost("singup")]
+        public async Task<ActionResult<AuthResponseDto>> SingUp(SingUpCommand req)
         {
             var result = await _mediator.Send(req);
             return Ok(result);

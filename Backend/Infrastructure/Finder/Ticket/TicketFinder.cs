@@ -13,7 +13,7 @@ namespace Infrastructure.Finder.Tickets
             _db = db;
         }
 
-        public async Task<Ticket> GetTicketByIdAsync(Guid id)
+        public async Task<Ticket?> GetTicketByIdAsync(Guid id)
         {
             var result = await _db.Tickets.FirstOrDefaultAsync(t => t.Id == id);
             return result;

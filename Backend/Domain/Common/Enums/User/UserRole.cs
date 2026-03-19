@@ -1,4 +1,4 @@
-﻿namespace Domain.Common.Enums.User
+﻿namespace Domain.Common.Enums.Users
 {
     public enum UserRole
     {

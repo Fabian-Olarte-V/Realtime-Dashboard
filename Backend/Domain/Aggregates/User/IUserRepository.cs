@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.AggregateModels.Users
+﻿namespace Domain.AggregateModels.Users
 {
-    internal interface IUserRepository
+    public interface IUserRepository
     {
+        Task<User> AddAsync(User user);
     }
 }

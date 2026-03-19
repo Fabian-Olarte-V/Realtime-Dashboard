@@ -2,7 +2,7 @@
 {
     public interface ITicketFinder
     {
-        Task<Ticket> GetTicketByIdAsync(Guid id);
+        Task<Ticket?> GetTicketByIdAsync(Guid id);
 
         Task<IEnumerable<Ticket>> GetAllTicketsAsync();
 

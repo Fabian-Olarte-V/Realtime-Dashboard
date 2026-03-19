@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.LoginCommand
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponseDto>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponseDto>
     {
         private readonly IUserFinder _userFinder;
         private readonly IJwtTokenGenerator _jwt;
@@ -17,7 +17,7 @@ namespace Application.Features.Auth.Commands.LoginCommand
             _jwt = jwt;
         }
 
-        public async Task<LoginResponseDto> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponseDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userFinder.FindByUsernameAsync(request.Username);
             if (user is null) throw new InvalidCredentialsException();
@@ -29,7 +29,7 @@ namespace Application.Features.Auth.Commands.LoginCommand
             var token = _jwt.GenerateToken(user.Id, user.Username, role);
 
             var userDto = new AuthUserDto(user.Id, user.Username, role);
-            return new LoginResponseDto(token, userDto);
+            return new AuthResponseDto(token, userDto);
         }
     }
 }

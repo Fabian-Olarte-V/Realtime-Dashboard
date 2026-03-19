@@ -11,9 +11,7 @@ namespace Infrastructure.Persistance.EntityConfigurations
             builder.ToTable("Users");
             builder.HasKey(e => e.Id);
 
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(120);
-            builder.Property(x => x.Email).IsRequired().HasMaxLength(200);
-            builder.HasIndex(x => x.Email).IsUnique();
+            builder.Property(x => x.Username).IsRequired().HasMaxLength(120);
             builder.Property(x => x.PasswordHash).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Role).IsRequired();
         }

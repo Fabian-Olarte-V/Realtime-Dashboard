@@ -1,11 +1,11 @@
 ﻿using Api.Common.Auth;
-using Application.Features.User.DTOs;
-using Application.Features.User.Queries.GetAllUsersQuery;
+using Application.Features.Users.DTOs;
+using Application.Features.Users.Queries.GetAllUsersQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers.User
+namespace Api.Controllers.Users
 {
     [ApiController]
     [Route("api/users")]

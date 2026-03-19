@@ -7,6 +7,7 @@ using Infrastructure.Common.SystemClock;
 using Infrastructure.Finder.Tickets;
 using Infrastructure.Finder.Users;
 using Infrastructure.Repository.Tickets;
+using Infrastructure.Repository.Users;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -26,6 +27,10 @@ namespace Infrastructure.DependencyInjection
                 .As<ITicketRepository>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<UserRepository>()
+                .As<IUserRepository>()
+                .InstancePerLifetimeScope();
+                
             builder.RegisterType<JwtTokenGenerator>()
                 .As<IJwtTokenGenerator>()
                 .InstancePerLifetimeScope();

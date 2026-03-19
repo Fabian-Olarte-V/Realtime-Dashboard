@@ -1,7 +1,7 @@
-﻿using Application.Features.User.DTOs;
+﻿using Application.Features.Users.DTOs;
 using MediatR;
 
-namespace Application.Features.User.Queries.GetAllUsersQuery
+namespace Application.Features.Users.Queries.GetAllUsersQuery
 {
     public class GetAllUsersQuery: IRequest<IEnumerable<UserDto>>
     {
