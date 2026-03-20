@@ -40,12 +40,13 @@ namespace Application.Features.Ticket.Commands.AssingTicketCommand
             ticket.UpdatedAt = _clock.UtcNow;
 
             var ticketUpdated = await _ticketRepository.UpdateAsync(ticket);
+            var newStatus = ticketUpdated.Status == TicketStatus.NEW ? TicketStatus.IN_PROGRESS : ticketUpdated.Status;
 
             var ticketResponse = new TicketDto(
                 ticketUpdated.Id,
                 ticketUpdated.Title,
                 ticketUpdated.Description,
-                ticketUpdated.Status.ToString(),
+                TicketStatus.IN_PROGRESS.ToString(),
                 ticketUpdated.AssigneeId,
                 ticketUpdated.Version,
                 ticketUpdated.CreatedAt,

@@ -7,7 +7,7 @@ namespace Api.Common.Auth
     {
         public static Guid GetUserId(this ClaimsPrincipal user)
         {
-            var sub = user.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            var sub = user.FindFirstValue(ClaimTypes.NameIdentifier);
             return Guid.Parse(sub!);
         }
 
