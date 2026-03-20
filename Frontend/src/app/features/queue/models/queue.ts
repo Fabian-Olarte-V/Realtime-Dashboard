@@ -1,5 +1,5 @@
 export type ItemStatus = 'NEW' | 'IN_PROGRESS' | 'DONE' | 'FAILED';
-export type SortOption = 'updatedAt_desc' | 'deadlineAt_asc' | 'priority_desc';
+export type SortOption = 'updatedat' | 'deadlineat' | 'createdat';
 export type MutationStatus = 'IDLE' | 'LOADING' | 'ERROR';
 
 export interface QueueItem {
@@ -25,7 +25,7 @@ export interface QueueFilters {
 }
 
 export interface TicketMutationResponse {
-  item: QueueItem;
+  items: QueueItem;
   serverTime: string;
 }
 

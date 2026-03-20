@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { QueueToolbar } from './queue-toolbar';
+import { QueueToolbarComponent } from './queue-toolbar';
+
 
 describe('QueueToolbar', () => {
-  let component: QueueToolbar;
-  let fixture: ComponentFixture<QueueToolbar>;
+  let component: QueueToolbarComponent;
+  let fixture: ComponentFixture<QueueToolbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QueueToolbar]
+      imports: [QueueToolbarComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(QueueToolbar);
+    fixture = TestBed.createComponent(QueueToolbarComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

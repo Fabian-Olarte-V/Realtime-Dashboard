@@ -24,7 +24,7 @@ export interface QueueState {
 export const initialQueueState: QueueState = {
   items: {},
   selectedItemId: null,
-  filters: { searchText: '', sort: 'updatedAt_desc', status: 'ALL' },
+  filters: { searchText: '', sort: 'createdat', status: 'ALL' },
   ids: [],
   pollingEnabled: false,
   pollingIntervalMs: 5000,

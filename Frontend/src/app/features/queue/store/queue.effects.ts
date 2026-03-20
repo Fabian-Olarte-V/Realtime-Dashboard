@@ -89,7 +89,7 @@ export class QueueEffects {
           .assignTicket(ticket!.id, { expectedVersion: ticket!.version })
           .pipe(
             map((res) =>
-              QueueActions.mutationSuccess({ item: res.item, serverTime: res.serverTime }),
+              QueueActions.mutationSuccess({ item: res.data.items, serverTime: res.serverTime }),
             ),
             catchError((error) =>
               of(
@@ -111,7 +111,7 @@ export class QueueEffects {
       exhaustMap(([, ticket]) =>
         this.queueApi.completeTicket(ticket!.id, { expectedVersion: ticket!.version }).pipe(
           map((res) =>
-            QueueActions.mutationSuccess({ item: res.item, serverTime: res.serverTime }),
+            QueueActions.mutationSuccess({ item: res.data.items, serverTime: res.serverTime }),
           ),
           catchError((error) =>
             of(

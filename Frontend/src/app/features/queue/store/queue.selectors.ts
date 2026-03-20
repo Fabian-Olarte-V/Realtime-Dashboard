@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { QueueState } from './queue.models';
 import { queueFeatureKey } from './queue.reducer';
 import * as AuthSelectors from '../../auth/store/auth.selectors';
+import { QueueItem } from '../models/queue';
 
 export const selectQueueState = createFeatureSelector<QueueState>(queueFeatureKey);
 
@@ -19,6 +20,15 @@ export const selectAllTickets = createSelector(
   selectQueueEntities,
   selectQueueIds,
   (entities, ids) => ids.map((id) => entities[id]).filter(Boolean),
+);
+
+export const selectFilteredTickets = createSelector(
+  selectQueueEntities,
+  selectQueueIds,
+  (entities, ids) =>
+    ids
+      .map((id) => entities[id])
+      .filter((item): item is QueueItem => !!item),
 );
 
 export const selectFilters = createSelector(selectQueueState, (s) => s.filters);
@@ -43,7 +53,7 @@ export const selectQueueError = createSelector(
 export const selectCanAssignToMe = createSelector(
   AuthSelectors.selectIsAuthenticated,
   selectSelectedTicket,
-  (isAuthenticated, ticket) => isAuthenticated && !!ticket && (ticket.status === 'IN_PROGRESS') ,
+  (isAuthenticated, ticket) => isAuthenticated && !!ticket && (ticket.status === 'NEW') ,
 );
 
 export const selectCanComplete = createSelector(

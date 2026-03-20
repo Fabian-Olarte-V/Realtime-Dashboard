@@ -30,17 +30,17 @@ export const queueReducer = createReducer(
 
   on(QueueActions.searchFilteredTicketsSuccess, (state, { items }) => {
     const entities: Record<string, QueueItem> = {};
-    const ids: string[] = [];
+    const filteredIds: string[] = [];
 
     for (const item of items) {
       entities[item.id] = item;
-      ids.push(item.id);
+      filteredIds.push(item.id);
     }
 
     return {
       ...state,
       items: entities,
-      ids,
+      ids: filteredIds,
     };
   }),
 
@@ -48,9 +48,19 @@ export const queueReducer = createReducer(
     const entities = { ...state.items };
     const ids = new Set(state.ids);
 
-    for (const item of items) {
-      entities[item.id] = item;
-      if (!ids.has(item.id)) ids.add(item.id);
+    if(ids.size == 0){
+      for (const item of items) {
+        entities[item.id] = item;
+        if (!ids.has(item.id)) ids.add(item.id);
+      }
+    }
+
+    else{
+      for (const item of items) {
+        if (ids.has(item.id)){
+          entities[item.id] = item;
+        };
+      }
     }
 
     return {
@@ -68,6 +78,7 @@ export const queueReducer = createReducer(
   })),
 
   on(QueueActions.mutationSuccess, (state, { item, serverTime }) => {
+    console.log(item);
     const entities = { ...state.items, [item.id]: item };
     const ids = state.ids.includes(item.id) ? state.ids : [...state.ids, item.id];
 

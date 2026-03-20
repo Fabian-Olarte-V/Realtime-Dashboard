@@ -28,11 +28,11 @@ export class QueueService {
     return this.http.get<ApiResponse<QueueItem[]>>(`${this.baseUrl}/changes`, { params });
   }
 
-  assignTicket(id: string, body: MutationTicketRequest): Observable<TicketMutationResponse> {
-    return this.http.put<TicketMutationResponse>(`${this.baseUrl}/${id}/assign`, body);
+  assignTicket(id: string, body: MutationTicketRequest): Observable<ApiResponse<TicketMutationResponse>> {
+    return this.http.put<ApiResponse<TicketMutationResponse>>(`${this.baseUrl}/${id}/assing`, body);
   }
 
-  completeTicket(id: string, body: MutationTicketRequest): Observable<TicketMutationResponse> {
-    return this.http.put<TicketMutationResponse>(`${this.baseUrl}/${id}/complete`, body);
+  completeTicket(id: string, body: MutationTicketRequest): Observable<ApiResponse<TicketMutationResponse>> {
+    return this.http.put<ApiResponse<TicketMutationResponse>>(`${this.baseUrl}/${id}/complete`, body);
   }
 }
