@@ -29,11 +29,7 @@ export interface TicketMutationResponse {
   serverTime: string;
 }
 
-export interface AssignTicketRequest {
-  assigneeId: string;
+export interface MutationTicketRequest {
   expectedVersion: number;
 }
 
-export interface CompleteTicketRequest {
-  expectedVersion: number;
-}

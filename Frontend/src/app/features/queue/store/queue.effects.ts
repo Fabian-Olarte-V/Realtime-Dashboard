@@ -84,9 +84,9 @@ export class QueueEffects {
         this.store.select(AuthSelectors.selectUser),
       ),
       filter(([, ticket, user]) => !!ticket && !!user),
-      exhaustMap(([, ticket, user]) =>
+      exhaustMap(([, ticket]) =>
         this.queueApi
-          .assignTicket(ticket!.id, { assigneeId: user!.id, expectedVersion: ticket!.version })
+          .assignTicket(ticket!.id, { expectedVersion: ticket!.version })
           .pipe(
             map((res) =>
               QueueActions.mutationSuccess({ item: res.item, serverTime: res.serverTime }),

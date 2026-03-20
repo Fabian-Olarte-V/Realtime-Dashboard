@@ -1,6 +1,7 @@
 using Application.Features.Ticket.DTOs;
 using FluentValidation;
 using MediatR;
+using System.ComponentModel;
 
 namespace Application.Features.Ticket.Commands.AssingTicketCommand
 {

@@ -37,7 +37,7 @@ namespace Api.Controllers.Tickets
         }
 
         [HttpPut("{id:guid}/assing")]
-        public async Task<ActionResult> AssignTicket(Guid id, [FromBody] AssingTicketCommand req)
+        public async Task<ActionResult> AssignTicket(Guid id, [FromBody] TicketMutationRequestDto req)
         {
             var userId = User.GetUserId();
             if (userId == Guid.Empty) return Unauthorized();
@@ -54,7 +54,7 @@ namespace Api.Controllers.Tickets
         }
 
         [HttpPut("{id:guid}/complete")]   
-        public async Task<ActionResult> CompleteTicket(Guid id, [FromBody] CompleteTicketCommand req)
+        public async Task<ActionResult> CompleteTicket(Guid id, [FromBody] TicketMutationRequestDto req)
         {
             var userId = User.GetUserId();
             var isAdmin = User.IsAdmin();

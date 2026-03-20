@@ -1,14 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environments';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
-  AssignTicketRequest,
-  CompleteTicketRequest,
+  MutationTicketRequest,
   QueueItem,
   TicketMutationResponse,
 } from '../models/queue';
-import { makeMockTickets } from '../helpers/helpers';
 import { ApiResponse } from '../../../shared/models/apiResponse/apiResponse';
 
 @Injectable({providedIn: 'root'})
@@ -30,21 +28,11 @@ export class QueueService {
     return this.http.get<ApiResponse<QueueItem[]>>(`${this.baseUrl}/changes`, { params });
   }
 
-  assignTicket(id: string, body: AssignTicketRequest): Observable<TicketMutationResponse> {
-    // return this.http.post<TicketMutationResponse>(`${this.baseUrl}/${id}/assign`, body);
-    console.log(`assigning ticket ${id} to ${body.assigneeId}`);
-    return of({
-      item: makeMockTickets(1)[0],
-      serverTime: new Date().toISOString(),
-    });
+  assignTicket(id: string, body: MutationTicketRequest): Observable<TicketMutationResponse> {
+    return this.http.put<TicketMutationResponse>(`${this.baseUrl}/${id}/assign`, body);
   }
 
-  completeTicket(id: string, body: CompleteTicketRequest): Observable<TicketMutationResponse> {
-    // return this.http.post<TicketMutationResponse>(`${this.baseUrl}/${id}/complete`, body);
-    console.log(`completing ticket ${id} with version ${body.expectedVersion}`);
-    return of({
-      item: makeMockTickets(1)[0],
-      serverTime: new Date().toISOString(),
-    });
+  completeTicket(id: string, body: MutationTicketRequest): Observable<TicketMutationResponse> {
+    return this.http.put<TicketMutationResponse>(`${this.baseUrl}/${id}/complete`, body);
   }
 }

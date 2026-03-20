@@ -13,4 +13,5 @@ namespace Application.Features.Ticket.DTOs
     );
 
     public sealed record TicketMutationResponseDto(TicketDto Items);
+    public sealed record TicketMutationRequestDto(int ExpectedVersion);
 }
