@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, output } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserRole } from '../../models/appUser';
 import { EyeIconComponent } from '../../../../shared/components/icons/eye-icon/eye-icon';
 import { EyeOffIconComponent } from '../../../../shared/components/icons/eye-off-icon/eye-off-icon';
 
 export interface RegisterPayload {
-  name: string;
-  email: string;
+  username: string;
   password: string;
+  role: UserRole;
 }
 
 @Component({
@@ -19,29 +20,36 @@ export interface RegisterPayload {
 })
 export class RegisterFormComponent {
   private readonly formBuilder = inject(FormBuilder);
+  protected readonly roles: UserRole[] = ['ADMIN', 'AGENT'];
 
   readonly submitRegister = output<RegisterPayload>();
   readonly loginClicked = output<void>();
 
-  readonly registerForm = this.formBuilder.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
+  readonly registerForm = this.formBuilder.group({
+    username: this.formBuilder.nonNullable.control('', [Validators.required]),
+    password: this.formBuilder.nonNullable.control('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
+    role: new FormControl<UserRole | ''>('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
   });
 
   showPassword = false;
   submitted = false;
 
-  get nameControl() {
-    return this.registerForm.controls.name;
-  }
-
-  get emailControl() {
-    return this.registerForm.controls.email;
+  get usernameControl() {
+    return this.registerForm.controls.username;
   }
 
   get passwordControl() {
     return this.registerForm.controls.password;
+  }
+
+  get roleControl() {
+    return this.registerForm.controls.role;
   }
 
   toggleShowPassword(): void {
@@ -60,7 +68,7 @@ export class RegisterFormComponent {
       return;
     }
 
-    this.submitRegister.emit(this.registerForm.getRawValue());
+    this.submitRegister.emit(this.registerForm.getRawValue() as RegisterPayload);
   }
 }
 

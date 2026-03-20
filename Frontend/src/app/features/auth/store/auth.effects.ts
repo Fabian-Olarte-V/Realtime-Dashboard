@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthService } from '../services/auth.service';
 import * as AuthActions from './auth.actions';
@@ -11,15 +12,32 @@ export class AuthEffects {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
+  private getErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      return error.error?.message || error.message || 'Unexpected authentication error.';
+    }
+
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    return 'Unexpected authentication error.';
+  }
+
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
       switchMap(({ user }) =>
         this.authService.login(user).pipe(
-          map((userData) => AuthActions.updateUserSession({ user: userData, token: 'mock-token' })),
-          catchError(() => {
-            return of(AuthActions.logout());
-          }),
+          map((response) =>
+            AuthActions.loginSuccess({
+              user: response.data.user,
+              token: response.data.token,
+            }),
+          ),
+          catchError((error) =>
+            of(AuthActions.loginFailure({ error: this.getErrorMessage(error) })),
+          ),
         ),
       ),
     ),
@@ -30,10 +48,15 @@ export class AuthEffects {
       ofType(AuthActions.signup),
       switchMap(({ user }) =>
         this.authService.signup(user).pipe(
-          map((userData) => AuthActions.updateUserSession({ user: userData, token: 'mock-token' })),
-          catchError(() => {
-            return of(AuthActions.logout());
-          }),
+          map((response) =>
+            AuthActions.signupSuccess({
+              user: response.data.user,
+              token: response.data.token,
+            }),
+          ),
+          catchError((error) =>
+            of(AuthActions.signupFailure({ error: this.getErrorMessage(error) })),
+          ),
         ),
       ),
     ),
@@ -42,7 +65,7 @@ export class AuthEffects {
   authSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.updateUserSession),
+        ofType(AuthActions.loginSuccess, AuthActions.signupSuccess, AuthActions.updateUserSession),
         tap(() => {
           this.router.navigate(['/queue']);
         }),

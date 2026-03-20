@@ -1,10 +1,6 @@
 @if (item) {
   <article class="ticket-detail">
-    <img
-      class="ticket-detail__cover"
-      src="/assets/images/ticket-bg.jpg"
-      alt="Ticket placeholder"
-    />
+    <img class="ticket-detail__cover" src="/assets/images/ticket-bg.jpg" alt="Ticket placeholder" />
     <div class="ticket-detail__content">
       <header class="ticket-detail__header">
         <h2 class="ticket-detail__title">{{ item.title }}</h2>
@@ -15,7 +11,9 @@
 
       <div class="ticket-detail__meta">
         <span><strong>Status:</strong> {{ item.status }}</span>
-        <span><strong>Priority:</strong> {{ item.priority }}</span>
+        @if (item.assigneeId) {
+          <span><strong>Assignee Id:</strong> {{ item.assigneeId }}</span>
+        }
         <span><strong>Deadline:</strong> {{ item.deadlineAt }}</span>
       </div>
 

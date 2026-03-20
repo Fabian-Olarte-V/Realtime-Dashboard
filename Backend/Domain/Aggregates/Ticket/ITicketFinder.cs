@@ -6,7 +6,7 @@
 
         Task<IEnumerable<Ticket>> GetAllTicketsAsync();
 
-        Task<IEnumerable<Ticket>> GetFilteredTicketsAsync(Guid? assigneeId, string? status,
-            string? querySearch, string? sort, string? dir);
+        Task<IEnumerable<Ticket>> GetFilteredTicketsAsync(string? status,
+            string? querySearch, string? sort);
     }
 }

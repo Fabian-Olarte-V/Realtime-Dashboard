@@ -2,20 +2,17 @@
   <h2 class="login-form__title">Welcome back</h2>
 
   <div class="login-form__field">
-    <label for="email">Email</label>
+    <label for="username">Username</label>
     <input
-      id="email"
-      type="email"
-      formControlName="email"
-      placeholder="Enter your email"
-      autocomplete="email"
+      id="username"
+      type="text"
+      formControlName="username"
+      placeholder="Enter your username"
+      autocomplete="username"
     />
-    @if (emailControl.touched || submitted) {
-      @if (emailControl.hasError('required')) {
-        <small class="error">Email is required.</small>
-      }
-      @if (emailControl.hasError('email')) {
-        <small class="error">Enter a valid email address.</small>
+    @if (usernameControl.touched || submitted) {
+      @if (usernameControl.hasError('required')) {
+        <small class="error">Username is required.</small>
       }
     }
   </div>

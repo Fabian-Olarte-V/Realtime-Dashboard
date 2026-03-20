@@ -1,0 +1,21 @@
+.error-handler-toast {
+  position: fixed;
+  top: 1rem;
+  right: 0%;
+  z-index: 9999;
+  transform: translateX(-10%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: min(90vw, 560px);
+  padding: 0.75rem 1rem;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 12px 30px -18px rgba(185, 28, 28, 0.45);
+}

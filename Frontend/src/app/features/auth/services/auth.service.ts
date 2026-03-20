@@ -1,9 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environments";
-import { Observable, of } from "rxjs";
-import { AppUser, AuthRequestPayload } from "../models/appUser";
-import { createRandomAppUser } from "../helpers/helpers";
+import { Observable } from "rxjs";
+import { AuthRequestPayload, AuthUser, SignupRequestPayload } from "../models/appUser";
+import { ApiResponse } from "../../../shared/models/apiResponse/apiResponse";
 
 
 @Injectable({providedIn: 'root'})
@@ -11,15 +11,11 @@ export class AuthService {
     private readonly http = inject(HttpClient);
     private readonly baseUrl = `${environment.apiBaseUrl}/auth`;
     
-    login(authRequest: AuthRequestPayload): Observable<AppUser> {
-        //return this.http.post<AppUser>(`${this.baseUrl}/login`, authRequest);
-        console.log('Logging in with username', authRequest);
-        return of(createRandomAppUser());
+    login(authRequest: AuthRequestPayload): Observable<ApiResponse<AuthUser>> {
+        return this.http.post<ApiResponse<AuthUser>>(`${this.baseUrl}/login`, authRequest);
     }
 
-    signup(authRequest: AuthRequestPayload): Observable<AppUser> {
-        //return this.http.post<AppUser>(`${this.baseUrl}/signup`, authRequest);
-        console.log('Signing up with username', authRequest);
-        return of(createRandomAppUser());
+    signup(authRequest: SignupRequestPayload): Observable<ApiResponse<AuthUser>> {
+        return this.http.post<ApiResponse<AuthUser>>(`${this.baseUrl}/signup`, authRequest);
     }
 }

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.SingUpCommand
 {
-    public class SingUpCommandHandler : IRequestHandler<SingUpCommand, AuthResponseDto>
+    public class SingUpCommandHandler : IRequestHandler<SignUpCommand, AuthResponseDto>
     {
         private readonly IUserFinder _userFinder;
         private readonly IUserRepository _userRepository;
@@ -19,7 +19,7 @@ namespace Application.Features.Auth.Commands.SingUpCommand
             _jwt = jwt;
         }
 
-        public async Task<AuthResponseDto> Handle(SingUpCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponseDto> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
             var existingUser = await _userFinder.FindByUsernameAsync(request.Username);
             if (existingUser is not null)

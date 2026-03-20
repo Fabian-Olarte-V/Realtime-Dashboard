@@ -21,7 +21,7 @@
       </span>
     </div>
 
-    <p class="ticket-item__meta">Assignee: {{ item.assigneeId || 'Unassigned' }}</p>
-    <p class="ticket-item__meta">Priority: {{ item.priority }} - Updated: {{ item.updatedAt }}</p>
+    <p class="ticket-item__meta">Description: {{ item.description }}</p>
+    <p class="ticket-item__meta">Updated At: {{ item.updatedAt }} </p>
   </article>
 </cdk-virtual-scroll-viewport>

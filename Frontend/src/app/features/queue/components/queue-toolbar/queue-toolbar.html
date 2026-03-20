@@ -23,9 +23,9 @@
   <label class="field">
     <span class="field__label">Order By</span>
     <select [value]="filters.sort" (change)="onSortChange($event)">
-      <option value="updatedAt_desc">Updated (desc)</option>
-      <option value="deadlineAt_asc">Deadline (asc)</option>
-      <option value="priority_desc">Priority (desc)</option>
+      <option value="createdat">Created Date</option>
+      <option value="deadlineat">Updated Date</option>
+      <option value="updatedat">Deadline Date</option>
     </select>
   </label>
 </div>

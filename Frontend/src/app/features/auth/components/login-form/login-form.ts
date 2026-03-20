@@ -5,7 +5,7 @@ import { EyeIconComponent } from '../../../../shared/components/icons/eye-icon/e
 import { EyeOffIconComponent } from '../../../../shared/components/icons/eye-off-icon/eye-off-icon';
 
 export interface LoginPayload {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -23,15 +23,15 @@ export class LoginFormComponent {
   readonly signUpClicked = output<void>();
 
   readonly loginForm = this.formBuilder.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
   showPassword = false;
   submitted = false;
 
-  get emailControl() {
-    return this.loginForm.controls.email;
+  get usernameControl() {
+    return this.loginForm.controls.username;
   }
 
   get passwordControl() {

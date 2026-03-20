@@ -6,6 +6,7 @@ import {
 } from '../../components/register-form/register-form';
 import { Store } from '@ngrx/store';
 import * as AuthActions from '../../store/auth.actions';
+import * as AuthSelectors from '../../store/auth.selectors';
 
 @Component({
   selector: 'app-auth-page',
@@ -16,13 +17,16 @@ import * as AuthActions from '../../store/auth.actions';
 })
 export class AuthPage {
   private readonly store = inject(Store);
+  readonly authError = this.store.selectSignal(AuthSelectors.selectAuthError);
   isLoginMode = true;
 
   showRegister(): void {
+    this.store.dispatch(AuthActions.clearAuthError());
     this.isLoginMode = false;
   }
 
   showLogin(): void {
+    this.store.dispatch(AuthActions.clearAuthError());
     this.isLoginMode = true;
   }
 

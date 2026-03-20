@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environments';
 import { Observable, of } from 'rxjs';
@@ -9,17 +9,25 @@ import {
   TicketMutationResponse,
 } from '../models/queue';
 import { makeMockTickets } from '../helpers/helpers';
+import { ApiResponse } from '../../../shared/models/apiResponse/apiResponse';
 
 @Injectable({providedIn: 'root'})
 export class QueueService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiBaseUrl}/tickets`;
 
-  getTickets(sinceIso: string): Observable<QueueItem[]> {
-    // const params = new HttpParams().set('since', sinceIso);
-    // return this.http.get<QueueItem[]>(this.baseUrl, { params });
-    console.log('fetching tickets updated since', sinceIso);
-    return of(makeMockTickets(20));
+  getAllTickets(q?: string, status?: string, sortby?: string): Observable<ApiResponse<QueueItem[]>>{
+    const params = new HttpParams()
+                        .set('status', status ?? "")
+                        .set('query', q ?? "")
+                        .set('sort', sortby ?? "");
+
+    return this.http.get<ApiResponse<QueueItem[]>>(`${this.baseUrl}`, { params });
+  }
+
+  getTickets(sinceIso: string): Observable<ApiResponse<QueueItem[]>> {
+    const params = new HttpParams().set('sinceiso', sinceIso);
+    return this.http.get<ApiResponse<QueueItem[]>>(`${this.baseUrl}/changes`, { params });
   }
 
   assignTicket(id: string, body: AssignTicketRequest): Observable<TicketMutationResponse> {

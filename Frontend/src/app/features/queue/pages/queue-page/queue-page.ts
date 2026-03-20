@@ -20,7 +20,7 @@ export class QueuePage implements OnInit, OnDestroy {
   private readonly store = inject(Store);
 
   readonly filters$ = this.store.select(QueueSelectors.selectFilters);
-  readonly items$ = this.store.select(QueueSelectors.selectFilteredTickets);
+  readonly items$ = this.store.select(QueueSelectors.selectAllTickets);
   readonly selectedItem$ = this.store.select(QueueSelectors.selectSelectedTicket);
   readonly selectedId$ = this.store.select(QueueSelectors.selectSelectedId);
   readonly pollingError$ = this.store.select(QueueSelectors.selectPollingError);

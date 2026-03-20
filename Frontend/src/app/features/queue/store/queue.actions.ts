@@ -4,10 +4,12 @@ import { QueueFilters, QueueItem } from '../models/queue';
 export const setFilters = createAction('[Queue] Set Filters', props<{ filters: QueueFilters }>());
 export const selectTicket = createAction('[Queue] Select Ticket', props<{ id: string | null }>());
 
+export const searchFilteredTickets = createAction('[Queue] Search Filtered Tickets')
 export const startPolling = createAction('[Queue] Start Polling');
 export const stopPolling = createAction('[Queue] Stop Polling');
 
-export const pollSuccess = createAction('[Queue] Poll Success', props<{ items: QueueItem[] }>());
+export const searchFilteredTicketsSuccess = createAction('[Queue] Search Filtered Tickets Success', props<{items: QueueItem[]}>())
+export const pollSuccess = createAction('[Queue] Poll Success', props<{ items: QueueItem[], lastSyncAt: string }>());
 export const pollFailure = createAction('[Queue] Poll Failure', props<{ error: string }>());
 
 export const assignToMe = createAction('[Queue] Assign To Me');

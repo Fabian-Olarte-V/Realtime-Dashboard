@@ -3,10 +3,11 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as AuthActions from './features/auth/store/auth.actions';
 import { filter, startWith } from 'rxjs';
+import { ErrorHandlerToast } from './shared/components/error-handler-toast/error-handler-toast';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ErrorHandlerToast],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

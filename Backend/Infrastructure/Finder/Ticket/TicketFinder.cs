@@ -25,16 +25,13 @@ namespace Infrastructure.Finder.Tickets
             return result;
         }
 
-        public async Task<IEnumerable<Ticket>> GetFilteredTicketsAsync(Guid? assigneeId, string? status, 
-            string? querySearch, string? sort, string? dir)
+        public async Task<IEnumerable<Ticket>> GetFilteredTicketsAsync(string? status, string? querySearch, string? sort)
         {
             var query = _db.Tickets.AsNoTracking().AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(status))
+            if (!string.IsNullOrWhiteSpace(status) && status is not "ALL")
                 query = query.Where(t => t.Status.ToString() == status);
 
-            if (assigneeId is not null)
-                query = query.Where(t => t.AssigneeId == assigneeId);
 
             if (!string.IsNullOrWhiteSpace(querySearch))
             {
@@ -42,13 +39,11 @@ namespace Infrastructure.Finder.Tickets
                 query = query.Where(t => t.Title.Contains(finalQuery) || t.Description.Contains(finalQuery));
             }
 
-
-            var desc = string.Equals(dir, "desc", StringComparison.OrdinalIgnoreCase);
             query = (sort?.ToLowerInvariant()) switch
             {
-                "createdat" => desc ? query.OrderByDescending(t => t.CreatedAt) : query.OrderBy(t => t.CreatedAt),
-                "deadlineat" => desc ? query.OrderByDescending(t => t.DeadlineAt) : query.OrderBy(t => t.DeadlineAt),
-                _ => desc ? query.OrderByDescending(t => t.UpdatedAt) : query.OrderBy(t => t.UpdatedAt),
+                "createdat" => query.OrderBy(t => t.CreatedAt),
+                "deadlineat" => query.OrderBy(t => t.DeadlineAt),
+                _ => query.OrderBy(t => t.UpdatedAt),
             };
 
             var items = await query.ToListAsync();

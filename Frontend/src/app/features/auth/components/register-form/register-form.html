@@ -2,39 +2,17 @@
   <h2 class="register-form__title">Create account</h2>
 
   <div class="register-form__field">
-    <label for="name">Name</label>
+    <label for="username">Username</label>
     <input
-      id="name"
+      id="username"
       type="text"
-      formControlName="name"
-      placeholder="Enter your name"
-      autocomplete="name"
+      formControlName="username"
+      placeholder="Enter your username"
+      autocomplete="username"
     />
-    @if (nameControl.touched || submitted) {
-      @if (nameControl.hasError('required')) {
-        <small class="error">Name is required.</small>
-      }
-      @if (nameControl.hasError('minlength')) {
-        <small class="error">Name must be at least 2 characters long.</small>
-      }
-    }
-  </div>
-
-  <div class="register-form__field">
-    <label for="email">Email</label>
-    <input
-      id="email"
-      type="email"
-      formControlName="email"
-      placeholder="Enter your email"
-      autocomplete="email"
-    />
-    @if (emailControl.touched || submitted) {
-      @if (emailControl.hasError('required')) {
-        <small class="error">Email is required.</small>
-      }
-      @if (emailControl.hasError('email')) {
-        <small class="error">Enter a valid email address.</small>
+    @if (usernameControl.touched || submitted) {
+      @if (usernameControl.hasError('required')) {
+        <small class="error">Username is required.</small>
       }
     }
   </div>
@@ -70,6 +48,26 @@
       }
       @if (passwordControl.hasError('minlength')) {
         <small class="error">Password must be at least 8 characters long.</small>
+      }
+    }
+  </div>
+
+  <div class="register-form__field">
+    <span class="register-form__label">Role</span>
+    <div class="register-form__role-options" role="radiogroup" aria-label="Select a role">
+      @for (role of roles; track role) {
+        <label
+          class="register-form__role-option"
+          [class.register-form__role-option--selected]="roleControl.value === role"
+        >
+          <input type="radio" formControlName="role" [value]="role" />
+          <span class="register-form__role-text">{{ role }}</span>
+        </label>
+      }
+    </div>
+    @if (roleControl.touched || submitted) {
+      @if (roleControl.hasError('required')) {
+        <small class="error">Role is required.</small>
       }
     }
   </div>

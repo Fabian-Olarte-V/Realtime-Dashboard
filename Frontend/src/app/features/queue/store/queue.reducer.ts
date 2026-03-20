@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { initialQueueState } from './queue.models';
 import * as QueueActions from './queue.actions';
+import { QueueItem } from '../models/queue';
 
 export const queueFeatureKey = 'queue';
 
@@ -27,7 +28,23 @@ export const queueReducer = createReducer(
     pollingEnabled: false,
   })),
 
-  on(QueueActions.pollSuccess, (state, { items }) => {
+  on(QueueActions.searchFilteredTicketsSuccess, (state, { items }) => {
+    const entities: Record<string, QueueItem> = {};
+    const ids: string[] = [];
+
+    for (const item of items) {
+      entities[item.id] = item;
+      ids.push(item.id);
+    }
+
+    return {
+      ...state,
+      items: entities,
+      ids,
+    };
+  }),
+
+  on(QueueActions.pollSuccess, (state, { items, lastSyncAt }) => {
     const entities = { ...state.items };
     const ids = new Set(state.ids);
 
@@ -40,7 +57,7 @@ export const queueReducer = createReducer(
       ...state,
       items: entities,
       ids: Array.from(ids),
-      lastSyncAt: "",
+      lastSyncAt: lastSyncAt,
       pollingError: null,
     };
   }),

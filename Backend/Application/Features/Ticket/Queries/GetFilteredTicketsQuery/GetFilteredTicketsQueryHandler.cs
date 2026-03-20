@@ -18,8 +18,7 @@ namespace Application.Features.Ticket.Queries.GetFilteredTicketsQuery
 
         public async Task<IEnumerable<TicketDto>> Handle(GetFilteredTicketsQuery request, CancellationToken cancellationToken)
         {
-            var tickets = await _ticketFinder.GetFilteredTicketsAsync(request.AssigneeId, 
-                request.Status, request.Query, request.Sort, request.Dir);
+            var tickets = await _ticketFinder.GetFilteredTicketsAsync(request.Status, request.Query, request.Sort);
 
             var result = tickets.Select(t => 
                 new TicketDto(

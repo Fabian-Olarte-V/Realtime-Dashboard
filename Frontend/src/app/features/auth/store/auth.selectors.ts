@@ -9,3 +9,5 @@ export const selectUserId = createSelector(selectUser, (user) => user?.id ?? nul
 export const selectToken = createSelector(selectAuthState, (s) => s.token);
 export const selectUserRole = createSelector(selectUser, (user) => user?.role ?? null);
 export const selectIsAuthenticated = createSelector(selectAuthState, (s) => s.authStatus);
+export const selectAuthLoading = createSelector(selectAuthState, (s) => s.loading);
+export const selectAuthError = createSelector(selectAuthState, (s) => s.error);

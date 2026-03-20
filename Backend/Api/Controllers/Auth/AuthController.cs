@@ -26,8 +26,8 @@ namespace Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("singup")]
-        public async Task<ActionResult<AuthResponseDto>> SingUp(SingUpCommand req)
+        [HttpPost("signup")]
+        public async Task<ActionResult<AuthResponseDto>> SingUp(SignUpCommand req)
         {
             var result = await _mediator.Send(req);
             return Ok(result);

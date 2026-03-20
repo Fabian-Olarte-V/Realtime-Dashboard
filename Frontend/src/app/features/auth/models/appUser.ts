@@ -1,12 +1,21 @@
 export type UserRole = 'ADMIN' | 'AGENT';
 
+export interface AuthUser{
+  token: string;
+  user: AppUser;
+}
+
 export interface AppUser {
   id: string;
-  name: string;
+  username: string;
   role: UserRole;
 }
 
 export interface AuthRequestPayload {
-  email: string;
+  username: string;
   password: string;
+}
+
+export interface SignupRequestPayload extends AuthRequestPayload {
+  role: UserRole;
 }

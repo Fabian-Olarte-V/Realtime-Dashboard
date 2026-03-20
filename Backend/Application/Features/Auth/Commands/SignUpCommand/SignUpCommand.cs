@@ -5,14 +5,14 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.SingUpCommand
 {
-    public class SingUpCommand : IRequest<AuthResponseDto>
+    public class SignUpCommand : IRequest<AuthResponseDto>
     {
         public required string Username { get; set; }
         public required string Password { get; set; }
         public required string Role { get; set; }
     }
 
-    public class SingUpCommandValidator : AbstractValidator<SingUpCommand>
+    public class SingUpCommandValidator : AbstractValidator<SignUpCommand>
     {
         public SingUpCommandValidator()
         {

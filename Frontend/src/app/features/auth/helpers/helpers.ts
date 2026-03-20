@@ -8,7 +8,7 @@ export function createRandomAppUser(): AppUser {
 
   return {
     id: randomId,
-    name: randomName,
+    username: randomName,
     role: randomRole,
   };
 }
