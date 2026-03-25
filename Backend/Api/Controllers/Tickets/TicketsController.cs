@@ -1,5 +1,5 @@
 using Api.Common.Auth;
-using Application.Features.Ticket.Commands.AssingTicketCommand;
+using Application.Features.Ticket.Commands.AssignTicketCommand;
 using Application.Features.Ticket.Commands.CompleteTicketCommand;
 using Application.Features.Ticket.DTOs;
 using Application.Features.Ticket.Queries.GetFilteredTicketsQuery;
@@ -36,13 +36,13 @@ namespace Api.Controllers.Tickets
             return Ok(result);
         }
 
-        [HttpPut("{id:guid}/assing")]
+        [HttpPut("{id:guid}/assign")]
         public async Task<ActionResult> AssignTicket(Guid id, [FromBody] TicketMutationRequestDto req)
         {
             var userId = User.GetUserId();
             if (userId == Guid.Empty) return Unauthorized();
 
-            var request = new AssingTicketCommand()
+            var request = new AssignTicketCommand()
             {
                 TicketId = id,
                 UserId = userId,

@@ -1,18 +1,17 @@
 using Application.Features.Ticket.DTOs;
 using FluentValidation;
 using MediatR;
-using System.ComponentModel;
 
-namespace Application.Features.Ticket.Commands.AssingTicketCommand
+namespace Application.Features.Ticket.Commands.AssignTicketCommand
 {
-    public class AssingTicketCommand : IRequest<TicketMutationResponseDto>
+    public class AssignTicketCommand : IRequest<TicketMutationResponseDto>
     {
         public Guid TicketId { get; init; }
         public Guid UserId { get; init; }
         public int ExpectedVersion { get; init; }
     }
 
-    public class AssingTicketCommandValidator : AbstractValidator<AssingTicketCommand>
+    public class AssingTicketCommandValidator : AbstractValidator<AssignTicketCommand>
     {
         public AssingTicketCommandValidator()
         {

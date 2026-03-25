@@ -5,9 +5,9 @@ using Domain.AggregateModels.Tickets;
 using MediatR;
 
 
-namespace Application.Features.Ticket.Commands.AssingTicketCommand
+namespace Application.Features.Ticket.Commands.AssignTicketCommand
 {
-    public class AssingTicketCommandHandler : IRequestHandler<AssingTicketCommand, TicketMutationResponseDto>
+    public class AssingTicketCommandHandler : IRequestHandler<AssignTicketCommand, TicketMutationResponseDto>
     {
         private readonly ITicketFinder _ticketFinder;
         private readonly ITicketRepository _ticketRepository;
@@ -21,7 +21,7 @@ namespace Application.Features.Ticket.Commands.AssingTicketCommand
         }
 
 
-        public async Task<TicketMutationResponseDto> Handle(AssingTicketCommand request, CancellationToken cancellationToken)
+        public async Task<TicketMutationResponseDto> Handle(AssignTicketCommand request, CancellationToken cancellationToken)
         {
             var ticket = await _ticketFinder.GetTicketByIdAsync(request.TicketId);
             if (ticket is null) throw new EntityNotFoundException("Ticket", request.TicketId);

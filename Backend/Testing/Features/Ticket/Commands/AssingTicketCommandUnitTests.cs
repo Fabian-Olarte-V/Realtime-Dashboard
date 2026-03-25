@@ -1,6 +1,6 @@
 using Application.Common;
 using Application.Exceptions;
-using Application.Features.Ticket.Commands.AssingTicketCommand;
+using Application.Features.Ticket.Commands.AssignTicketCommand;
 using Domain.AggregateModels.Tickets;
 using Moq;
 using AutoFixture;
@@ -26,7 +26,7 @@ namespace UnitTesting.Features.Tickets.Commands
         {
             var now = DateTimeOffset.UtcNow;
             var ticket = DomainTestData.CreateTicket(_fixture.Create<string>(), TicketStatus.NEW, version: 2);
-            var request = new AssingTicketCommand
+            var request = new AssignTicketCommand
             {
                 TicketId = ticket.Id,
                 UserId = Guid.NewGuid(),
@@ -55,7 +55,7 @@ namespace UnitTesting.Features.Tickets.Commands
         [Fact]
         public async Task Handle_should_throw_when_ticket_does_not_exist()
         {
-            var request = new AssingTicketCommand
+            var request = new AssignTicketCommand
             {
                 TicketId = Guid.NewGuid(),
                 UserId = Guid.NewGuid(),
@@ -76,7 +76,7 @@ namespace UnitTesting.Features.Tickets.Commands
         public async Task Handle_should_throw_when_version_does_not_match()
         {
             var ticket = DomainTestData.CreateTicket(_fixture.Create<string>(), TicketStatus.NEW, version: 4);
-            var request = new AssingTicketCommand
+            var request = new AssignTicketCommand
             {
                 TicketId = ticket.Id,
                 UserId = Guid.NewGuid(),
@@ -97,7 +97,7 @@ namespace UnitTesting.Features.Tickets.Commands
         public async Task Handle_should_throw_when_ticket_is_done_or_failed()
         {
             var doneTicket = DomainTestData.CreateTicket(_fixture.Create<string>(), TicketStatus.DONE, version: 1);
-            var request = new AssingTicketCommand
+            var request = new AssignTicketCommand
             {
                 TicketId = doneTicket.Id,
                 UserId = Guid.NewGuid(),
