@@ -1,6 +1,5 @@
 ﻿using Infraestructure.Persistance;
 using Infrastructure.Auth;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +8,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Api.Common.Auth;
 using Domain.Common.Enums.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -21,7 +21,7 @@ namespace Infrastructure.DependencyInjection
 
             services.AddDbContext<AppDbContext>(opt =>
             {
-                opt.UseSqlServer(configuration.GetConnectionString("Default"));
+                opt.UseNpgsql(configuration.GetConnectionString("Default"));
             });
             
             services

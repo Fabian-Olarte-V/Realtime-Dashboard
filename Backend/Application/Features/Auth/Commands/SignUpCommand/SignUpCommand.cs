@@ -3,7 +3,7 @@ using Domain.Common.Enums.Users;
 using FluentValidation;
 using MediatR;
 
-namespace Application.Features.Auth.Commands.SingUpCommand
+namespace Application.Features.Auth.Commands.SignUpCommand
 {
     public class SignUpCommand : IRequest<AuthResponseDto>
     {

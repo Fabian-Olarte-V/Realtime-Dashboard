@@ -1,23 +1,23 @@
 using Application.Common;
 using Application.Exceptions;
-using Application.Features.Auth.Commands.SingUpCommand;
+using Application.Features.Auth.Commands.SignUpCommand;
 using Domain.AggregateModels.Users;
 using Domain.Common.Enums.Users;
 using Moq;
 using AutoFixture;
-using DomainUser = Domain.AggregateModels.Users.User;
+using Domain.AggregateModels.Users;
 using UnitTesting.Common;
 
 namespace UnitTesting.Features.Auth.Commands
 {
-    public class SingUpCommandUnitTests
+    public class SignUpCommandUnitTests
     {
         private readonly IFixture _fixture;
         private readonly Mock<IUserFinder> _userFinderMock = new();
         private readonly Mock<IUserRepository> _userRepositoryMock = new();
         private readonly Mock<IJwtTokenGenerator> _jwtTokenGeneratorMock = new();
 
-        public SingUpCommandUnitTests()
+        public SignUpCommandUnitTests()
         {
             _fixture = new Fixture();
         }
@@ -25,30 +25,30 @@ namespace UnitTesting.Features.Auth.Commands
         [Fact]
         public async Task Handle_should_create_user_and_return_jwt_when_request_is_valid()
         {
-            var request = new SingUpCommand
+            var request = new SignUpCommand
             {
                 Username = _fixture.Create<string>(),
                 Password = _fixture.Create<string>(),
                 Role = "ADMIN"
             };
 
-            DomainUser? persistedUser = null;
+            User? persistedUser = null;
             var token = _fixture.Create<string>();
 
             _userFinderMock
                 .Setup(x => x.FindByUsernameAsync(request.Username))
-                .ReturnsAsync((DomainUser?)null);
+                .ReturnsAsync((User?)null);
 
             _userRepositoryMock
-                .Setup(x => x.AddAsync(It.IsAny<DomainUser>()))
-                .Callback<DomainUser>(user => persistedUser = user)
-                .ReturnsAsync((DomainUser user) => user);
+                .Setup(x => x.AddAsync(It.IsAny<User>()))
+                .Callback<User>(user => persistedUser = user)
+                .ReturnsAsync((User user) => user);
 
             _jwtTokenGeneratorMock
                 .Setup(x => x.GenerateToken(It.IsAny<Guid>(), request.Username, "ADMIN"))
                 .Returns(token);
 
-            var handler = new SingUpCommandHandler(
+            var handler = new SignUpCommandHandler(
                 _userFinderMock.Object,
                 _userRepositoryMock.Object,
                 _jwtTokenGeneratorMock.Object);
@@ -67,7 +67,7 @@ namespace UnitTesting.Features.Auth.Commands
         [Fact]
         public async Task Handle_should_throw_when_username_already_exists()
         {
-            var request = new SingUpCommand
+            var request = new SignUpCommand
             {
                 Username = _fixture.Create<string>(),
                 Password = _fixture.Create<string>(),
@@ -80,7 +80,7 @@ namespace UnitTesting.Features.Auth.Commands
                 .Setup(x => x.FindByUsernameAsync(request.Username))
                 .ReturnsAsync(existingUser);
 
-            var handler = new SingUpCommandHandler(
+            var handler = new SignUpCommandHandler(
                 _userFinderMock.Object,
                 _userRepositoryMock.Object,
                 _jwtTokenGeneratorMock.Object);
@@ -91,7 +91,7 @@ namespace UnitTesting.Features.Auth.Commands
         [Fact]
         public async Task Handle_should_throw_when_role_is_invalid()
         {
-            var request = new SingUpCommand
+            var request = new SignUpCommand
             {
                 Username = _fixture.Create<string>(),
                 Password = _fixture.Create<string>(),
@@ -100,9 +100,9 @@ namespace UnitTesting.Features.Auth.Commands
 
             _userFinderMock
                 .Setup(x => x.FindByUsernameAsync(request.Username))
-                .ReturnsAsync((DomainUser?)null);
+                .ReturnsAsync((User?)null);
 
-            var handler = new SingUpCommandHandler(
+            var handler = new SignUpCommandHandler(
                 _userFinderMock.Object,
                 _userRepositoryMock.Object,
                 _jwtTokenGeneratorMock.Object);

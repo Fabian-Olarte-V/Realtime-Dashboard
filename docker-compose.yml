@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  postgresdb:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: realtime-db
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: 
+      context: ./Backend
+      dockerfile: Dockerfile
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings__Default=Host=${DB_HOST};Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+    ports:
+      - 8080:8080
+    networks:
+      - app-net
+
+  frontend:
+    build: 
+      context: ./Frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+    networks:
+      - app-net
+
+volumes:
+  postgres_data:
+    external: false
+
+networks:
+  app-net:
+    driver: bridge

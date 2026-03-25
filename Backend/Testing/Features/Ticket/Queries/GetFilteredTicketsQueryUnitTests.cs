@@ -3,7 +3,6 @@ using Application.Features.Ticket.Queries.GetFilteredTicketsQuery;
 using Domain.AggregateModels.Tickets;
 using Moq;
 using AutoFixture;
-using DomainTicket = Domain.AggregateModels.Tickets.Ticket;
 using UnitTesting.Common;
 
 namespace UnitTesting.Features.Tickets.Queries
@@ -25,11 +24,9 @@ namespace UnitTesting.Features.Tickets.Queries
             var assigneeId = Guid.NewGuid();
             var request = new GetFilteredTicketsQuery
             {
-                AssigneeId = assigneeId,
                 Status = "IN_PROGRESS",
                 Query = "printer",
                 Sort = "updatedAt",
-                Dir = "desc"
             };
 
             var tickets = new[]
@@ -39,7 +36,7 @@ namespace UnitTesting.Features.Tickets.Queries
             };
 
             _ticketFinderMock
-                .Setup(x => x.GetFilteredTicketsAsync(request.AssigneeId, request.Status, request.Query, request.Sort, request.Dir))
+                .Setup(x => x.GetFilteredTicketsAsync(request.Status, request.Query, request.Sort))
                 .ReturnsAsync(tickets);
 
             var handler = new GetFilteredTicketsQueryHandler(_ticketFinderMock.Object, _clockMock.Object);

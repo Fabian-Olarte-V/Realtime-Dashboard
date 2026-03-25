@@ -11,7 +11,8 @@ namespace Infrastructure.Persistance.Seed
         public static async Task SeedAsync(AppDbContext context)
         {
             await context.Database.MigrateAsync();
-            context.Tickets.RemoveRange(context.Tickets);
+            
+            context.Tickets.RemoveRange(context.Tickets);   
             await context.SaveChangesAsync();
 
             if(!await context.Users.AnyAsync())
@@ -33,7 +34,7 @@ namespace Infrastructure.Persistance.Seed
                 var tickets = Enumerable.Range(1, 500).Select(i =>
                 {
                     var status = (TicketStatus)(i % 4);
-                    var deadline = now.AddMinutes(5);
+                    var deadline = now.AddMinutes(10);
 
                     return new Ticket
                     {

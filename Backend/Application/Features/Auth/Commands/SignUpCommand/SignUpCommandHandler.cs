@@ -4,15 +4,15 @@ using Application.Features.Auth.DTOs;
 using Domain.AggregateModels.Users;
 using MediatR;
 
-namespace Application.Features.Auth.Commands.SingUpCommand
+namespace Application.Features.Auth.Commands.SignUpCommand
 {
-    public class SingUpCommandHandler : IRequestHandler<SignUpCommand, AuthResponseDto>
+    public class SignUpCommandHandler : IRequestHandler<SignUpCommand, AuthResponseDto>
     {
         private readonly IUserFinder _userFinder;
         private readonly IUserRepository _userRepository;
         private readonly IJwtTokenGenerator _jwt;
 
-        public SingUpCommandHandler(IUserFinder userFinder, IUserRepository userRepository, IJwtTokenGenerator jwt)
+        public SignUpCommandHandler(IUserFinder userFinder, IUserRepository userRepository, IJwtTokenGenerator jwt)
         {
             _userFinder = userFinder;
             _userRepository = userRepository;
