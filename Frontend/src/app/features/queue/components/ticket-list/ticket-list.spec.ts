@@ -7,13 +7,13 @@ describe('TicketList', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TicketListComponent]
-    })
-    .compileComponents();
+      imports: [TicketListComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TicketListComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    component.items = [];
+    fixture.detectChanges();
   });
 
   it('should create', () => {
