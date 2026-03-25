@@ -1,5 +1,37 @@
+# Dependencies
 node_modules
+
+# Build output
 dist
+coverage
 .angular
+tmp
+out-tsc
+bazel-out
+
+# VCS
 .git
+.gitignore
+
+# Editors
 .vscode
+.idea
+.history
+
+# Logs
+npm-debug.log*
+yarn-*.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Docs / local-only files
+__screenshots__
+README.md
