@@ -1,0 +1,173 @@
+name: Ecs(Fargate) Deployment
+on: workflow_dispatch
+env:
+  AWS_REGION: us-east-1
+  ECS_CLUSTER: realtime-dashboard-cluster
+
+  ECR_REPOSITORY_BACK: realtime-dashboard-backend-repo
+  ECR_REPOSITORY_FRONT: realtime-dashboard-frontend-repo
+
+  ECS_SERVICE_BACK: realtime-dashboard-back-service
+  ECS_SERVICE_FRONT: realtime-dashboard-front-service
+
+  ECS_TASK_DEFINITION_BACK: Aws/task-definition-back.json
+  ECS_TASK_DEFINITION_FRONT: Aws/task-definition-front.json
+
+  CONTAINER_NAME_BACK: backend
+  CONTAINER_NAME_FRONT: frontend
+
+
+jobs:
+  backend-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Backend
+
+    steps:
+      - uses: actions/checkout@v4
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 9
+
+      - name: Restore Dependencies
+        run: dotnet restore ./Api/Backend.slnx
+      
+      - name: Build
+        run: dotnet build ./Api/Backend.slnx --no-restore
+      
+      - name: Run Tests
+        run: dotnet test ./Testing/UnitTesting.csproj --no-build
+
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Frontend
+
+    steps:
+      - uses: actions/checkout@v5
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+      
+      - name: Build
+        run: npm run build
+
+      - name: Run Tests
+        run: npm run test -- --no-watch
+
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: backend-build
+    defaults:
+      run:
+        working-directory: ./Backend
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v5
+        
+
+      - name: Aws credencials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+
+      - name: Build, Tag, and Push Backend Docker Image to Amazon ECR
+        id: build-back-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY_BACK }}
+          IMAGE_TAG: latest
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/${{ env.ECR_REPOSITORY_BACK }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+
+      - name: Render backend task definition
+        id: render-back-task
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION_BACK }}
+          container-name: ${{ env.CONTAINER_NAME_BACK }}
+          image: ${{ steps.build-back-image.outputs.image }}
+
+
+      - name: Deploy backend task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-back-task.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE_BACK }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true   
+
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: frontend-build
+    defaults:
+      run:
+        working-directory: ./Frontend
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v5
+        
+      - name: Aws credencials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, Tag, and Push Backend Docker Image to Amazon ECR
+        id: build-front-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY_FRONT }}
+          IMAGE_TAG: latest
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/${{ env.ECR_REPOSITORY_FRONT }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+
+      - name: Render frontend task definition
+        id: render-front-task
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION_FRONT }}
+          container-name: ${{ env.CONTAINER_NAME_FRONT }}
+          image: ${{ steps.build-front-image.outputs.image }}
+
+      - name: Deploy frontend task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-front-task.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE_FRONT }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+

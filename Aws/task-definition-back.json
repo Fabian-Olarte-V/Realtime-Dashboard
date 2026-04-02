@@ -1,0 +1,88 @@
+{
+  "family": "realtime-dashboard-back",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::351667818284:role/ecsTaskExecutionRole",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "containerDefinitions": [
+    {
+      "name": "backend",
+      "image": "351667818284.dkr.ecr.us-east-1.amazonaws.com/realtime-dashboard-backend-repo:initial",
+      "essential": true,
+      "dependsOn": [
+        {
+          "containerName": "database",
+          "condition": "HEALTHY"
+        }
+      ],
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "ASPNETCORE_ENVIRONMENT",
+          "value": "Production"
+        },
+        {
+          "name": "ConnectionStrings__Default",
+          "value": "Host=localhost;Port=5432;Database=realtime-db;Username=admin;Password=admin"
+        }
+      ]
+    },
+    {
+      "name": "database",
+      "image": "postgres:15",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 5432,
+          "hostPort": 5432,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "POSTGRES_USER",
+          "value": "admin"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "admin"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "value": "realtime-db"
+        }
+      ],
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "pg_isready -U admin -d realtime-db || exit 1"
+        ],
+        "interval": 5,
+        "timeout": 5,
+        "retries": 10,
+        "startPeriod": 10
+      }
+    }
+  ],
+  "logConfiguration": {
+    "logDriver": "awslogs",
+    "options": {
+      "awslogs-group": "/ecs/tu-app",
+      "awslogs-region": "us-east-1",
+      "awslogs-stream-prefix": "ecs"
+    }
+  }
+}
